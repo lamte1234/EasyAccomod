@@ -1,0 +1,30 @@
+extends ../common/common
+
+block content
+    h1 Owner Sign Up
+    if errors
+        each error in errors    
+            .alert.alert-danger= error
+    form(action="", method="POST")
+        .form-group
+            label(for="email") Email
+            input#email.form-control(type="email", name="email", value= values ? values.email : '')
+        .form-group
+            label(for="name") Name
+            input#name.form-control(type="text", name="name", value= values ? values.name : '')
+        .form-group
+            label(for="id_card_number") Identification Number
+            input#id_card_number.form-control(type="text", name="id_card_number" value= values ? values.id_card_number : '')
+        .form-group
+            label(for="phone") Phone
+            input#phone.form-control(type="number", name="phone", value= values ? values.phone : '')
+        .form-group
+            label(for="address") Address
+            input#address.form-control(type="text", name="address" value= values ? values.password : '')
+        .form-group
+            label(for="password") Password
+            input#password.form-control(type="password", name="password" value= values ? values.password : '')
+        .form-group
+            label(for="cf_pass") Confirm Password
+            input#cf_pass.form-control(type="password", name="cf_pass" value= values ? values.cf_pass : '')
+        button.btn.btn-primary Sign Up

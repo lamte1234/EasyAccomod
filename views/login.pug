@@ -1,0 +1,12 @@
+extends ./common/common
+
+block content 
+    h1 Log in
+    form(action="/login", method="POST")
+        .form-group
+            label(for="email") Email
+            input#email.form-control(type="email" value= value ? value.email : '')
+        .form-group
+            label(for="password") Password
+            input#password.form-control(type="password" value= value ? value.password : '')
+        button.btn.btn-primary Login
