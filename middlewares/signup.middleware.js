@@ -2,8 +2,8 @@ const db = require('../db');
 
 // renter validate
 module.exports.postRenter = (req, res, next) => {
-    var renter = db.get('renter_account').find({email: req.body.email}).value();
-    var errors = [];
+    let renter = db.get('renter_account').find({email: req.body.email}).value();
+    let errors = [];
     
     if(renter) {
         errors.push('Existing email');
@@ -39,8 +39,8 @@ module.exports.postRenter = (req, res, next) => {
 
 //owner validate
 module.exports.postOwner = (req, res, next) => {
-    var owner = db.get('owner_account').find({email: req.body.email}).value();
-    var errors = [];
+    let owner = db.get('owner_account').find({email: req.body.email}).value();
+    let errors = [];
 
     if(owner) {
         errors.push('Existing email.');

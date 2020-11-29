@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const db = require('./db');
 
 const signupRoutes = require('./routes/signup.route');
-
+const loginRoutes = require('./routes/login.route');
 
 const app = express();
 const port = 3000;
@@ -20,11 +20,8 @@ app.get('/', (req, res) =>{
     res.render('index');
 });
 
-app.get('/login', (req, res) => {
-    res.render('login');
-});
-
 app.use('/signup', signupRoutes);
+app.use('/login', loginRoutes);
 
 app.listen(port, () => {
     console.log('App on port' + port);
