@@ -20,11 +20,11 @@ module.exports.postRenter = (req, res) => {
         name: req.body.name,
         password: req.body.password
     };
-    // need handling show post 
+
     db.get('renter_account').push(dataRenter).write();
-    res.render('home', {
-        name: req.body.name
-    });
+    req.session.user = dataRenter;
+
+    res.redirect('/users/renter');
 };
 
 module.exports.postOwner = (req, res) => {
@@ -35,12 +35,11 @@ module.exports.postOwner = (req, res) => {
         id_card_number: req.body.id_card_number,
         phone: req.body.phone,
         address: req.body.address,
-        password: req.body.password
+        password: req.body.password,
+        is_approved: false
     };
 
     db.get('owner_account').push(dataOwner).write();
-    //need handling account approvement waiting
-    res.render('home', {
-        name: req.body.name
-    });
+    req.session.user = dataOwner;
+    res.redirect('/users');
 }
