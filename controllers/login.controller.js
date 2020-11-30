@@ -19,7 +19,7 @@ module.exports.postLogin = (req, res) => {
     }
 
     if (user_type === 'owner' && user.is_approved === false){
-        res.redirect('/users/owner');
+        res.redirect('/users');
     }
 
     if (user_type === 'admin') {
