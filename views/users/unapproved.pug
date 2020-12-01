@@ -3,6 +3,14 @@ extends ../common/common
 block content
     if user
         h1 Hello #{user.name}
-
-    h1 Your account is not approved.
-    h2 Contact EasyAccomod Admin Team for more infomation.
+    ul.nav
+        li.nav-item
+            a.nav-link Notifications
+        li.nav-item
+            a.nav-link.disabled Post
+        li.nav-item
+            a.nav-link.disabled Edit
+        li.nav-item
+            a.nav-link.disabled Statistics
+    .alert.alert-danger Your account is not approved.
+    .small Contact EasyAccomod Admin Team for more infomation.

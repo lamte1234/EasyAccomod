@@ -1,5 +1,7 @@
 const db = require('../db');
 const shortid = require('shortid');
+const Renter = require('../models/renter.model');
+const Owner = require('../models/owner.model')
 
 module.exports.index = (req, res) => {
     res.render('signup/signup');
@@ -15,13 +17,20 @@ module.exports.owner = (req, res) => {
 
 module.exports.postRenter = (req, res) => {
     let dataRenter = {
-        id: shortid.generate(),
         email: req.body.email,
         name: req.body.name,
-        password: req.body.password
+        password: req.body.password,
+        wishlist: [],
+        report: []
     };
 
-    db.get('renter_account').push(dataRenter).write();
+    Renter.create(dataRenter, (err, newRenter) => {
+        if (err) {
+            return 'Server error.';
+        }
+    });
+    
+
     req.session.user = dataRenter;
 
     res.redirect('/users/renter');
@@ -29,7 +38,6 @@ module.exports.postRenter = (req, res) => {
 
 module.exports.postOwner = (req, res) => {
     let dataOwner = {
-        id: shortid.generate(),
         email: req.body.email,
         name: req.body.name,
         id_card_number: req.body.id_card_number,
@@ -39,7 +47,12 @@ module.exports.postOwner = (req, res) => {
         is_approved: false
     };
 
-    db.get('owner_account').push(dataOwner).write();
+    Owner.create(dataOwner, (err, newOwner) => {
+        if(err){
+            return 'Server error.'
+        }
+    })
+    
     req.session.user = dataOwner;
     res.redirect('/users');
 }

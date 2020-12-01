@@ -8,7 +8,7 @@ router.get('/', controllers.unapproved);
 
 router.get('/renter', controllers.renter);
 
-// router.get('/owner', controllers.owner);
+router.get('/owner', controllers.owner);
 
 router.get('/admin', controllers.admin);
 

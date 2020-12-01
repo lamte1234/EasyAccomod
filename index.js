@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URL);
+
 const db = require('./db');
 
 const signupRoutes = require('./routes/signup.route');

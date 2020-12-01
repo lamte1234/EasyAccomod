@@ -26,7 +26,7 @@ module.exports.admin = (req, res) => {
 module.exports.owner = (req, res) => {
     let user = req.session.user;
 
-    if (user.is_approved === false) {
+    if (user && user.is_approved === false) { // testing users/owner
         res.redirect('/users');
     }
     else{
