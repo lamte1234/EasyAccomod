@@ -2,6 +2,7 @@
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model');
 const Admin = require('../models/admin.model');
+const md5 = require('md5');
 
 module.exports.postLogin = async (req, res, next) => {
    
@@ -29,8 +30,11 @@ module.exports.postLogin = async (req, res, next) => {
         errors.push('Password is required.');
     }
 
+    const extraPass = req.body.password + process.env.PASSWORD_EXTRA_SECRET;
+    const hashPass = md5(extraPass);
+
     if((!user && req.body.email && req.body.password) ||
-        (user && req.body.password !== user.password && req.body.password)){
+        (user && hashPass!== user.password && req.body.password)){
         errors.push('Wrong password or email.');
     }
 

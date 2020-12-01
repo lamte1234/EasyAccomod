@@ -1,7 +1,7 @@
-const db = require('../db');
-const shortid = require('shortid');
+
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model')
+const md5 = require('md5');
 
 module.exports.index = (req, res) => {
     res.render('signup/signup');
@@ -16,10 +16,11 @@ module.exports.owner = (req, res) => {
 };
 
 module.exports.postRenter = (req, res) => {
-    let dataRenter = {
+    const extraPass = req.body.password + process.env.PASSWORD_EXTRA_SECRET;
+    const dataRenter = {
         email: req.body.email,
         name: req.body.name,
-        password: req.body.password,
+        password: md5(extraPass),
         wishlist: [],
         report: []
     };
@@ -37,13 +38,14 @@ module.exports.postRenter = (req, res) => {
 };
 
 module.exports.postOwner = (req, res) => {
-    let dataOwner = {
+    const extraPass = req.body.password + process.env.PASSWORD_EXTRA_SECRET;
+    const dataOwner = {
         email: req.body.email,
         name: req.body.name,
         id_card_number: req.body.id_card_number,
         phone: req.body.phone,
         address: req.body.address,
-        password: req.body.password,
+        password: md5(extraPass),
         is_approved: false
     };
 
