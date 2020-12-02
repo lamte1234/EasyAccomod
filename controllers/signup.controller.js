@@ -33,8 +33,8 @@ module.exports.postRenter = (req, res) => {
     
 
     req.session.user = dataRenter;
-
-    res.redirect('/users/renter');
+    res.json(dataRenter); // handle
+    //res.redirect('/users/renter');
 };
 
 module.exports.postOwner = (req, res) => {
@@ -56,5 +56,6 @@ module.exports.postOwner = (req, res) => {
     })
     
     req.session.user = dataOwner;
-    res.redirect('/users');
+    // res.redirect('/users');
+    res.json(dataOwner);
 }

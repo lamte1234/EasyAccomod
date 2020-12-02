@@ -25,18 +25,24 @@ module.exports.postLogin = async (req, res) => {
 
     req.session.user = user;
 
-    if (user_type === 'renter'){
-        res.redirect('/users/renter');
+    // if (user_type === 'renter'){
+    //     res.redirect('/users/renter');
+    // }
+    // else if (user_type === 'owner' && user.is_approved === true){
+    //     res.redirect('/users/owner');
+    // }
+    // else if (user_type === 'owner' && user.is_approved === false){
+    //     res.redirect('/users');
+    // }
+    // else if (user_type === 'admin') {
+    //     res.redirect('users/admin');
+    // }
+
+    const data = {
+        user_type: user_type,
+        ...user._doc
     }
-    else if (user_type === 'owner' && user.is_approved === true){
-        res.redirect('/users/owner');
-    }
-    else if (user_type === 'owner' && user.is_approved === false){
-        res.redirect('/users');
-    }
-    else if (user_type === 'admin') {
-        res.redirect('users/admin');
-    }
+    res.json(data);
 };
 
 

@@ -29,10 +29,14 @@ module.exports.postRenter = async (req, res, next) => {
     }
 
     if (errors.length) {
-        res.render('signup/renter', {
-            errors: errors,
-            values: req.body
-        });
+        // res.render('signup/renter', {
+        //     errors: errors,
+        //     values: req.body
+        // });
+        const data = {
+            errors: errors
+        }
+        res.json(data);
         return;
     }
 
@@ -45,7 +49,6 @@ module.exports.postRenter = async (req, res, next) => {
 module.exports.postOwner = async (req, res, next) => {
     let errors = [];
 
-    
 
     if (!req.body.email) {
         errors.push('Email is required');
@@ -82,10 +85,14 @@ module.exports.postOwner = async (req, res, next) => {
     }
 
     if (errors.length) {
-        res.render('signup/owner', {
-            errors: errors,
-            values: req.body
-        });
+        // res.render('signup/owner', {
+        //     errors: errors,
+        //     values: req.body
+        // });
+        const data = {
+            errors: errors
+        };
+        res.json(data);
         return;
     }
 

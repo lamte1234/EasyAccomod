@@ -3,18 +3,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const cors = require('cors');
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URL);
-
-const db = require('./db');
 
 const signupRoutes = require('./routes/signup.route');
 const loginRoutes = require('./routes/login.route');
 const usersRoutes = require('./routes/users.route');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 5000;
 
 
 app.set('view engine', 'pug');
@@ -30,6 +29,7 @@ app.use(session({
     saveUninitialized: false
 }));
 app.use(express.static('static'));
+app.use(cors());
 
 app.get('/', (req, res) =>{
     res.render('index');

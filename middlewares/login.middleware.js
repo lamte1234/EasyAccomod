@@ -6,7 +6,7 @@ const md5 = require('md5');
 
 module.exports.postLogin = async (req, res, next) => {
    
-    let model;
+    let model = Renter;
 
     if (req.body.account_type === 'renter_account'){
         model = Renter;
@@ -39,10 +39,15 @@ module.exports.postLogin = async (req, res, next) => {
     }
 
     if(errors.length){
-        res.render('login', {
-            errors: errors,
-            values: req.body
-        });
+        // res.render('login', {
+        //     errors: errors,
+        //     values: req.body
+        // });
+        const data = {
+            errors: errors
+        }
+        res.json(data);
+
         return;
     }
 
