@@ -6,7 +6,7 @@ const ownerSchema = new mongoose.Schema({
     password: String,
     id_card_number: String,
     address: String,
-    phone: Number,
+    phone: String,
     is_approved: Boolean
 });
 

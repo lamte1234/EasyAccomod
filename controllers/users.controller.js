@@ -1,38 +1,30 @@
-// maybe can delete
+const Renter = require('../models/renter.model');
+const Owner = require('../models/owner.model');
+const Admin = require('../models/admin.model');
 
-module.exports.unapproved = (req, res) => {
-    let user = req.session.user;
 
-    res.render('users/unapproved', {
-        user: user
-    });
-}
-
+// /users/renter/:id
 module.exports.renter = (req, res) => {
-    let user = req.session.user;
+    const id = req.params.id;
 
-    res.render('users/renter', {
-        user: user
-    });
+    Renter.findById(id)
+    .then(renter => res.json(renter))
+    .catch(error => res.status(400).json('error:' + error));
 }
 
+// /users/owner/:id
 module.exports.admin = (req, res) => {
-    let user = req.session.user;
+    const id = req.params.id;
 
-    res.render('users/admin', {
-        user : user
-    });
+    Admin.findById(id)
+    .then(admin => res.json(admin))
+    .catch(error => res.status(400).json('error' + error));
 }
 
+// /users/admin/:id
 module.exports.owner = (req, res) => {
-    let user = req.session.user;
-
-    if (user && user.is_approved === false) { // testing users/owner
-        res.redirect('/users');
-    }
-    else{
-        res.render('users/owner', {
-            user : user
-        });
-    }
+    const id = req.params.id;
+    Owner.findById(id)
+    .then(owner => res.json(owner))
+    .catch(error => res.status(400).json('error' + error));
 }
