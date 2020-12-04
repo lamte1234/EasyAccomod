@@ -10,13 +10,12 @@ module.exports.postOwnerPost = (req, res) => {
         review: []
     }
 
-    Post.create(data, (err, data) => {
-        if(err){
-            console.log('Server error,');
-        }
-    });
+    const newPost = new Post(data);
+    newPost.save()
+    .then(post => console.log(post))
+    .catch(err => console.log('server error'));
 }
 
-module.export.editOwnerPost = (req, res) => {
+// module.export.editOwnerPost = (req, res) => {
 
-}
+// }

@@ -1,19 +1,9 @@
 
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model')
+const jwt = require('jsonwebtoken');
 const md5 = require('md5');
 
-module.exports.index = (req, res) => {
-    res.render('signup/signup');
-};
-
-module.exports.renter = (req, res) => {
-    res.render('signup/renter');
-};
-
-module.exports.owner = (req, res) => {
-    res.render('signup/owner');
-};
 
 module.exports.postRenter = (req, res) => {
     const extraPass = req.body.password + process.env.PASSWORD_EXTRA_SECRET;
@@ -24,17 +14,19 @@ module.exports.postRenter = (req, res) => {
         wishlist: [],
         report: []
     };
-
-    Renter.create(dataRenter, (err, newRenter) => {
-        if (err) {
-            return 'Server error.';
-        }
-    });
     
+    const newRenter = new Renter(dataRenter);
+    newRenter.save()
+    .then(renter => {
+        const token = jwt.sign({_id: renter._id}, process.env.TOKEN_SECRET);
+        res.header('auth-token', token);
+        res.json(renter); 
+    })
+    .catch(err => console.log('server error'));
 
+    
     req.session.user = dataRenter;
-    res.json(dataRenter); // handle
-    //res.redirect('/users/renter');
+    
 };
 
 module.exports.postOwner = (req, res) => {
@@ -49,13 +41,14 @@ module.exports.postOwner = (req, res) => {
         is_approved: false
     };
 
-    Owner.create(dataOwner, (err, newOwner) => {
-        if(err){
-            return 'Server error.'
-        }
+    const newOwner = new Owner(dataOwner);
+    newOwner.save()
+    .then(owner => {
+        const token = jwt.sign({_id: owner._id}, process.env.TOKEN_SECRET);
+        res.header('auth-token', token);
+        res.json(owner); //or message success
     })
+    .catch(err => console.log('server error'));
     
     req.session.user = dataOwner;
-    // res.redirect('/users');
-    res.json(dataOwner);
 }

@@ -1,11 +1,9 @@
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model');
 const Admin = require('../models/admin.model');
+const jwt = require('jsonwebtoken');
 
-module.exports.index = (req, res) => {
-    res.render('login');
-};
-
+// /login
 module.exports.postLogin = async (req, res) => {
     let model;
 
@@ -37,11 +35,12 @@ module.exports.postLogin = async (req, res) => {
     // else if (user_type === 'admin') {
     //     res.redirect('users/admin');
     // }
-
     const data = {
         user_type: user_type,
         ...user._doc
     }
+    const token = jwt.sign({_id: user._doc._id}, process.env.TOKEN_SECRET);
+    res.header('auth-token', token);
     res.json(data);
 };
 
