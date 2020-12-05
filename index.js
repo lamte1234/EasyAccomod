@@ -12,6 +12,7 @@ mongoose.connect(process.env.MONGO_URL,
 
 const signupRoutes = require('./routes/signup.route');
 const loginRoutes = require('./routes/login.route');
+const logoutRoute = require('./routes/logout.route');
 const usersRoutes = require('./routes/users.route');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(session({
+    name: "sid",
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
@@ -39,6 +41,7 @@ app.get('/', (req, res) =>{
 
 app.use('/signup', signupRoutes);
 app.use('/login', loginRoutes);
+app.use('/logout', logoutRoute);
 app.use('/users', usersRoutes);
 
 

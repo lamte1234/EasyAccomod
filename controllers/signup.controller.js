@@ -20,12 +20,10 @@ module.exports.postRenter = (req, res) => {
     .then(renter => {
         const token = jwt.sign({_id: renter._id}, process.env.TOKEN_SECRET);
         res.header('auth-token', token);
+        req.session.user = renter._id;
         res.json(renter); 
     })
     .catch(err => console.log('server error'));
-
-    
-    req.session.user = dataRenter;
     
 };
 
@@ -46,9 +44,10 @@ module.exports.postOwner = (req, res) => {
     .then(owner => {
         const token = jwt.sign({_id: owner._id}, process.env.TOKEN_SECRET);
         res.header('auth-token', token);
+        req.session.user = owner._id;
         res.json(owner); //or message success
     })
     .catch(err => console.log('server error'));
     
-    req.session.user = dataOwner;
+    
 }

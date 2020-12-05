@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports.auth = (req, res, next) => {
     const token = req.header('auth-token');
-
+    // maybe remove jwt using only session for auth
     if(!token){
         return;
     }
@@ -15,6 +15,14 @@ module.exports.auth = (req, res, next) => {
     }
     catch(err){
         console.log(err);
+        return;
+    }
+
+    if(!req.cookie.sid){
+        return;
+    }
+
+    if(!req.cookie.sid === req.sessionID){
         return;
     }
     

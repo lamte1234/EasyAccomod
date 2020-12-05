@@ -21,9 +21,14 @@ module.exports.postLogin = async (req, res, next) => {
     const user = await model.findOne({email: req.body.email});
 
     let errors = [];
+    const email_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     if(!req.body.email){
         errors.push('Email is required.');
+    }
+
+    if(req.body.email && !req.body.email.match(email_re)){
+        errors.push('Invalid email.')
     }
 
     if(!req.body.password){
@@ -39,10 +44,6 @@ module.exports.postLogin = async (req, res, next) => {
     }
 
     if(errors.length){
-        // res.render('login', {
-        //     errors: errors,
-        //     values: req.body
-        // });
         const data = {
             errors: errors
         }
