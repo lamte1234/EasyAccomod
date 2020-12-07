@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 // /login
 module.exports.postLogin = async (req, res) => {
-    let model;
+    let model = Renter;
 
     if (req.body.account_type === 'renter_account'){
         model = Renter;
@@ -40,7 +40,7 @@ module.exports.postLogin = async (req, res) => {
         ...user._doc
     }
     const token = jwt.sign({_id: user._doc._id}, process.env.TOKEN_SECRET);
-    res.session.user = user._doc._id;
+    req.session.user = user._doc._id;
     res.header('auth-token', token);
     res.json(data);
 };

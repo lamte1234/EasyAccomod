@@ -30,7 +30,10 @@ app.use(session({
     name: "sid",
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie:{
+        path: 'http://localhost:3000/'
+    }
 }));
 app.use(express.static('static'));
 app.use(cors());
