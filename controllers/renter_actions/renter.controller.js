@@ -1,7 +1,7 @@
 const Post = require('../../models/post.model');
 const Renter = require('../../models/owner.model');
 // sửa lại theo form nhập liệu sau
-// /users/renter/:id/search
+// /users/renter/search
 module.exports.postSearch = (req, res) => {
     const data = {
         ...req.body
@@ -12,9 +12,9 @@ module.exports.postSearch = (req, res) => {
     .catch(error => res.status(400).json('error' + error));
 }
 
-// users/renter/:id/wishlist
+// users/renter/wishlist
 module.exports.wishlist = (req, res) => {
-    const id = req.params.id
+    const id = req.session.user;
 
     Renter.findById(id)
     .then(renter => res.json(renter.wishlist))

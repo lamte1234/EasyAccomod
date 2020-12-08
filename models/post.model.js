@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const { post } = require('../routes/users.route');
 
 const postSchema = mongoose.Schema({
     owner_id: mongoose.Schema.Types.ObjectId,
+    title: String,
     address: {
         city: String,
         district: String,
@@ -32,6 +34,6 @@ const postSchema = mongoose.Schema({
     }]
 });
 
-const Post = mongoose.model('Post', postSchema)
+const Post = mongoose.model('Post', postSchema, post);
 
 module.exports = Post;
