@@ -1,30 +1,96 @@
-const jwt = require('jsonwebtoken');
-
-// put this middleware before any controllers that need protecting
-
 module.exports.auth = (req, res, next) => {
-    const token = req.header('auth-token');
-    // maybe remove jwt using only session for auth
-    if(!token){
+    if(!req.sessionID){
+        res.status(401).send('Access Denied.');
         return;
     }
 
-    try{
-        const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(verified);
-    }
-    catch(err){
-        console.log(err);
+
+    if(!req.cookies.sid){
+        res.status(401).send('Access Denied.');
         return;
     }
 
-    if(!req.cookie.sid){
+    if(req.cookies.sid !== req.sessionID){
+        res.status(401).send('Access Denied.');
         return;
     }
 
-    if(!req.cookie.sid === req.sessionID){
+    if(req.sessionID && req.cookies.sid && req.sessionID !== req.cookies.sid){
+        res.status(401).send('Access Denied.');
         return;
     }
     
+    next();
+}
+
+module.exports.adminAuth = (req, res, next) => {
+    if(!req.sessionID){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(!req.cookies.sid){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(req.sessionID && req.cookies.sid && req.sessionID !== req.cookies.sid){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(req.session.user_type !== 'admin') {
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    next();
+}
+
+module.exports.renterAuth = (req, res, next) => {
+    if(!req.sessionID){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(!req.cookies.sid){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(req.sessionID && req.cookies.sid && req.sessionID !== req.cookies.sid){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(req.session.user_type !== 'renter') {
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    next();
+}
+
+module.exports.adminAuth = (req, res, next) => {
+    if(!req.sessionID){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(!req.cookies.sid){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(req.sessionID && req.cookies.sid && req.sessionID !== req.cookies.sid){
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
+    if(req.session.user_type !== 'owner') {
+        res.status(401).send('Access Denied.');
+        return;
+    }
+
     next();
 }

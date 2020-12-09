@@ -21,29 +21,16 @@ module.exports.postLogin = async (req, res) => {
 
     let user_type = req.body.account_type.replace('_account', '');
 
-    req.session.user = user;
-
-    // if (user_type === 'renter'){
-    //     res.redirect('/users/renter');
-    // }
-    // else if (user_type === 'owner' && user.is_approved === true){
-    //     res.redirect('/users/owner');
-    // }
-    // else if (user_type === 'owner' && user.is_approved === false){
-    //     res.redirect('/users');
-    // }
-    // else if (user_type === 'admin') {
-    //     res.redirect('users/admin');
-    // }
     const data = {
         user_type: user_type,
         ...user._doc
     }
     const token = jwt.sign({_id: user._doc._id}, process.env.TOKEN_SECRET);
+    req.session.user_type = user_type;
     req.session.user = user._doc._id;
     res.header('auth-token', token);
+    res.status(200).send('Success');
     res.json(data);
 };
 
 
-/// need using encryption to hash and salt password
