@@ -17,7 +17,6 @@ module.exports.postRenter = (req, res) => {
     .then(renter => {
         req.session.user = renter._id;
         req.session.user_type = 'renter';
-        // res.send('Success');
         res.status(200).json(renter); 
     })
     .catch(err => console.log('server error'));
@@ -43,7 +42,7 @@ module.exports.postOwner = (req, res) => {
         req.session.user_type = 'owner';
         res.status(200).json(owner);
     })
-    .catch(err => console.log('server error'));
+    .catch(err => console.log(err));
     
     
 }

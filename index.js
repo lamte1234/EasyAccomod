@@ -22,21 +22,23 @@ const port = process.env.PORT || 5000;
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(session({
-    name: "sid",
+    // name: "sid",
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie:{
-        // path: 'http://localhost:3000/' // nothing when using postman
-    }
+    // cookie:{
+    //      //nothing when using postman
+    //     httpOnly: false,
+    //     maxAge: 3600000
+    // }
 }));
 app.use(express.static('static'));
-app.use(cors());
+
 
 app.get('/', (req, res) =>{
     res.render('index');
