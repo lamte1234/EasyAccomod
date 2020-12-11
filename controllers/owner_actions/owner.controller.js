@@ -8,8 +8,7 @@ module.exports.postOwnerPost = (req, res) => {
         ...req.body,
         is_approved: false,
         owner_id: req.session.user,
-        status: true,
-        review: []
+        status: true
     }
 
     const newPost = new Post(data);
@@ -40,7 +39,6 @@ module.exports.postEditOwnerPostByID = (req, res) => {
         ...req.body, // req.body must have status field
         is_approved: false,
         owner_id: req.session.user,
-        review: []
     };
 
     Post.findByIdAndUpdate(id, data)

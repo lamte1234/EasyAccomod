@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { post } = require('../routes/users.route');
+
 
 const postSchema = mongoose.Schema({
     owner_id: mongoose.Schema.Types.ObjectId,
@@ -26,12 +26,7 @@ const postSchema = mongoose.Schema({
     image: [String],
     status: Boolean,
     is_approved: Boolean,
-    time: String,
-    review: [{
-        renter_id: mongoose.Schema.Types.ObjectId,
-        review: String,
-        star: Number
-    }]
+    time: String
 });
 
 const Post = mongoose.model('Post', postSchema, 'posts');

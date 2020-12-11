@@ -10,9 +10,7 @@ module.exports.postRenter = (req, res) => {
     const dataRenter = {
         email: req.body.email,
         name: req.body.name,
-        password: md5(extraPass),
-        wishlist: [],
-        report: []
+        password: md5(extraPass)
     };
     
     const newRenter = new Renter(dataRenter);
