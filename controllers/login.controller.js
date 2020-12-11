@@ -1,7 +1,7 @@
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model');
 const Admin = require('../models/admin.model');
-const jwt = require('jsonwebtoken');
+
 
 // /login
 module.exports.postLogin = async (req, res) => {
@@ -25,12 +25,11 @@ module.exports.postLogin = async (req, res) => {
         user_type: user_type,
         ...user._doc
     }
-    const token = jwt.sign({_id: user._doc._id}, process.env.TOKEN_SECRET);
+    
     req.session.user_type = user_type;
     req.session.user = user._doc._id;
     res.header('auth-token', token);
-    res.status(200).send('Success');
-    res.json(data);
+    res.status(200).json(data); // manage data sent later
 };
 
 

@@ -4,12 +4,22 @@ const Owner = require('../../models/owner.model');
 
 // /users/owner/post
 module.exports.postOwnerPost = (req, res) => {
+    const images = [];
+    req.files.map(file => {
+        const file_dir = file.path.split('\\').slice(1).join('\\');
+        images.push(file_dir);
+    })
+
     const data = {
         ...req.body,
         is_approved: false,
-        owner_id: req.session.user,
-        status: true
+        owner_id: 'test',
+        status: true,
+        likes: 0,
+        views: 0,
+        image: images
     }
+    
 
     const newPost = new Post(data);
     newPost.save()

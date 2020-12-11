@@ -1,7 +1,6 @@
 
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model')
-const jwt = require('jsonwebtoken');
 const md5 = require('md5');
 
 
@@ -16,12 +15,10 @@ module.exports.postRenter = (req, res) => {
     const newRenter = new Renter(dataRenter);
     newRenter.save()
     .then(renter => {
-        const token = jwt.sign({_id: renter._id}, process.env.TOKEN_SECRET);
-        res.header('auth-token', token);
         req.session.user = renter._id;
         req.session.user_type = 'renter';
-        res.status(200).send('Success');
-        res.json(renter); 
+        // res.send('Success');
+        res.status(200).json(renter); 
     })
     .catch(err => console.log('server error'));
     
@@ -42,12 +39,9 @@ module.exports.postOwner = (req, res) => {
     const newOwner = new Owner(dataOwner);
     newOwner.save()
     .then(owner => {
-        const token = jwt.sign({_id: owner._id}, process.env.TOKEN_SECRET);
-        res.header('auth-token', token);
         req.session.user = owner._id;
         req.session.user_type = 'owner';
-        res.status(200).send('Success');
-        res.json(owner); //or message success
+        res.status(200).json(owner);
     })
     .catch(err => console.log('server error'));
     

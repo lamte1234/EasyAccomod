@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const uploads = multer({dest: '../../static/uploads/'});
+const uploads = multer({dest: 'static/uploads/'});
 
 const controllers = require('../../controllers/owner_actions/owner.controller')
 
 // /users/owner/post
-router.post('/post', controllers.postOwnerPost);
+router.post('/post', uploads.array('image', 5),controllers.postOwnerPost);
 // /users/owner/edit
 router.get('/edit', controllers.getOwnerPost)
 // /users/owner/edit/:id

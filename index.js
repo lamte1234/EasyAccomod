@@ -30,9 +30,9 @@ app.use(session({
     name: "sid",
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie:{
-        path: 'http://localhost:3000/'
+        // path: 'http://localhost:3000/' // nothing when using postman
     }
 }));
 app.use(express.static('static'));
