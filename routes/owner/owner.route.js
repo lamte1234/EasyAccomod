@@ -5,11 +5,11 @@ const uploads = multer({dest: '../../static/uploads/'});
 
 const controllers = require('../../controllers/owner_actions/owner.controller')
 
-
+// /users/owner/post
 router.post('/post', controllers.postOwnerPost);
-
+// /users/owner/edit
 router.get('/edit', controllers.getOwnerPost)
-
+// /users/owner/edit/:id
 router.get('/edit/:id', controllers.getOwnerPostByID);
 router.post('/edit/:id', controllers.postEditOwnerPostByID);
 

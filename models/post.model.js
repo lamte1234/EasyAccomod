@@ -34,6 +34,6 @@ const postSchema = mongoose.Schema({
     }]
 });
 
-const Post = mongoose.model('Post', postSchema, post);
+const Post = mongoose.model('Post', postSchema, 'posts');
 
 module.exports = Post;
