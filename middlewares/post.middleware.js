@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 module.exports.postValidation = (req, res, next) => {
     const errors = [];
 
@@ -87,7 +89,12 @@ module.exports.postValidation = (req, res, next) => {
         errors.push('Posting time must in range 1-4 weeks.')
     }
     // image
-    if(req.files.length() < 3){ errors.push('Must have at least 3 images, max 5 images')}
+    if(req.files.length() < 3){ 
+        errors.push('Must have at least 3 images, max 5 images');
+        req.files.map(file => {
+            fs.unlinkSync(file.path);
+        });
+    }
 
     if (errors.length) {
         const data = {
