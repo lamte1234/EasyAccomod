@@ -4,7 +4,7 @@ const Owner = require('../../models/owner.model');
 
 // /users/owner/post
 module.exports.postOwnerPost = (req, res) => {
-    const images = [];
+    let images = [];
     req.files.map(file => {
         const file_dir = file.path.split('\\').slice(1).join('\\');
         images.push(file_dir);
@@ -13,7 +13,7 @@ module.exports.postOwnerPost = (req, res) => {
     const data = {
         ...req.body,
         is_approved: false,
-        owner_id: 'test',
+        owner_id: req.session.user,
         status: true,
         likes: 0,
         views: 0,
@@ -24,7 +24,7 @@ module.exports.postOwnerPost = (req, res) => {
     const newPost = new Post(data);
     newPost.save()
     .then(post => res.status(200).json('success'))
-    .catch(err => res.json('server error'));
+    .catch(err => console.log(err));
 }
 
 // /users/owner/edit show list of owners post
