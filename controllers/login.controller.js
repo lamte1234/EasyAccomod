@@ -5,7 +5,7 @@ const Admin = require('../models/admin.model');
 
 // /login
 module.exports.postLogin = async (req, res) => {
-    let model = Renter;
+    let model = Owner;
 
     if (req.body.account_type === 'renter_account'){
         model = Renter;

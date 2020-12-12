@@ -6,6 +6,8 @@ const Owner = require('../models/owner.model');
 module.exports.postRenter = async (req, res, next) => {
     let errors = [];
     const email_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/
+    const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/
 
     if (!req.body.email) {
         errors.push('Email is required.');
@@ -19,8 +21,17 @@ module.exports.postRenter = async (req, res, next) => {
         errors.push('Name is required.');
     }
 
+    if(req.body.name && !req.body.name.match(name_re)){
+        errors.push('Name must be non-special text.')
+    }
+
     if (!req.body.password) {
         errors.push('Password is required.');
+    }
+
+    if((req.body.password && !req.body.password.match(password_re)) ||
+        (req.body.cf_pass && !req.body.cf_pass.match(password_re))){
+        errors.push('Password must have 6-13 non-special characters')
     }
 
     if (req.body.password !== req.body.cf_pass) {
@@ -52,6 +63,8 @@ module.exports.postOwner = async (req, res, next) => {
     const email_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const phone_re = /^[0-9]{10}$/;
     const id_num_re = /^[a-zA-Z0-9]{16}$/;
+    const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/
+    const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/
 
     if (!req.body.email) {
         errors.push('Email is required');
@@ -63,6 +76,10 @@ module.exports.postOwner = async (req, res, next) => {
     
     if (!req.body.name) {
         errors.push('Name is required');
+    }
+
+    if(req.body.name && !req.body.name.match(name_re)){
+        errors.push('Name must be non-special text.')
     }
 
     if (!req.body.id_card_number) {
@@ -87,6 +104,11 @@ module.exports.postOwner = async (req, res, next) => {
 
     if (!req.body.password) {
         errors.push('Password is required');
+    }
+
+    if((req.body.password && !req.body.password.match(password_re)) ||
+        (req.body.cf_pass && !req.body.cf_pass.match(password_re))){
+        errors.push('Password must have 6-13 non-special characters')
     }
 
     if (req.body.password !== req.body.cf_pass) {

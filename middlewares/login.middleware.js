@@ -5,10 +5,16 @@ const Admin = require('../models/admin.model');
 const md5 = require('md5');
 
 module.exports.postLogin = async (req, res, next) => {
-   
-    let model = Renter;
+    let model = Owner;
+    let errors = [];
 
-    if (req.body.account_type === 'renter_account'){
+    if(req.body.account_type !== 'renter_account' || 
+        req.body.account_type !== 'owner_account' ||
+        req.body.account_type !== 'admin_account' ||
+        req.body.account_type !== null){
+            errors.push('Invalid account.')
+        }
+    else if (req.body.account_type === 'renter_account'){
         model = Renter;
     }
     else if (req.body.account_type === 'owner_account'){
@@ -20,8 +26,8 @@ module.exports.postLogin = async (req, res, next) => {
 
     const user = await model.findOne({email: req.body.email});
 
-    let errors = [];
     const email_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/
 
     if(!req.body.email){
         errors.push('Email is required.');
@@ -39,9 +45,12 @@ module.exports.postLogin = async (req, res, next) => {
     const hashPass = md5(extraPass);
 
     if((!user && req.body.email && req.body.password) ||
-        (user && hashPass!== user.password && req.body.password)){
+        (user && hashPass!== user.password && req.body.password) ||
+        (req.body.email && req.body.password && !req.body.password.match(password_re))){
         errors.push('Wrong password or email.');
     }
+
+
 
     if(errors.length){
         const data = {
