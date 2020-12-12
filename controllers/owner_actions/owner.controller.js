@@ -43,7 +43,7 @@ module.exports.getOwnerPostByID = (req, res) => {
     .catch(err => res.json('server error'));
 }
 
-module.exports.postEditOwnerPostByID = (req, res) => {
+module.exports.putEditOwnerPostByID = (req, res) => {
     const id = req.params.id;
     const data = {
         ...req.body, // req.body must have status field

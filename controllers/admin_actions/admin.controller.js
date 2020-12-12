@@ -10,7 +10,7 @@ module.exports.getUnapprovedOwners = (req, res) => {
 
 
 // /users/admin/accounts/:id
-module.exports.postApprovedOwner = (req, res) => {
+module.exports.patchApprovedOwner = (req, res) => {
     const id = req.params.id;
 
     Owner.findByIdAndUpdate(id, {is_approved: true})
@@ -26,7 +26,7 @@ module.exports.getUnapprovedPosts = (req, res) => {
 }
 
 // / users/admin/posts/:id
-module.exports.postApprovedPost = (req, res) => {
+module.exports.patchApprovedPost = (req, res) => {
     const id = req.params.id;
 
     Post.findByIdAndUpdate(id, {is_approved: true})

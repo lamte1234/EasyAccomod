@@ -7,8 +7,8 @@ router.get('/accounts', controllers.getUnapprovedOwners);
 // /users/admin/posts
 router.get('/posts', controllers.getUnapprovedPosts);
 // /users/admin/accounts/:id
-router.post('/accounts/:id', controllers.postApprovedOwner);
+router.patch('/accounts/:id', controllers.patchApprovedOwner);
 // /users/admin/posts/:id
-router.post('/posts/:id', controllers.postApprovedPost);
+router.patch('/posts/:id', controllers.patchApprovedPost);
 
 module.exports = router;

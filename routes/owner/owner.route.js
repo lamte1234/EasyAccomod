@@ -13,6 +13,6 @@ router.post('/post', uploads.array('image', 5), middlewares.postValidation,
 router.get('/edit', controllers.getOwnerPost)
 // /users/owner/edit/:id
 router.get('/edit/:id', controllers.getOwnerPostByID);
-router.post('/edit/:id', controllers.postEditOwnerPostByID);
+router.put('/edit/:id', controllers.putEditOwnerPostByID);
 
 module.exports = router;
