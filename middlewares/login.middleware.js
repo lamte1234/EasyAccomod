@@ -8,10 +8,9 @@ module.exports.postLogin = async (req, res, next) => {
     let model = Owner;
     let errors = [];
 
-    if(req.body.account_type !== 'renter_account' || 
-        req.body.account_type !== 'owner_account' ||
-        req.body.account_type !== 'admin_account' ||
-        req.body.account_type !== null){
+    if(req.body.account_type !== 'renter_account' && 
+        req.body.account_type !== 'owner_account' &&
+        req.body.account_type !== 'admin_account' ){
             errors.push('Invalid account.')
         }
     else if (req.body.account_type === 'renter_account'){
