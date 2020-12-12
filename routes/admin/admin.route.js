@@ -10,5 +10,6 @@ router.get('/posts', controllers.getUnapprovedPosts);
 router.patch('/accounts/:id', controllers.patchApprovedOwner);
 // /users/admin/posts/:id
 router.patch('/posts/:id', controllers.patchApprovedPost);
+router.get('/posts/:id', controllers.getUnapprovedPostByID);
 
 module.exports = router;

@@ -22,10 +22,18 @@ module.exports.patchApprovedOwner = (req, res) => {
 module.exports.getUnapprovedPosts = (req, res) => {
     Post.find({is_approved: false})
     .then(posts => res.json(posts))
-    .catch(err => res.json('seerver error'));
+    .catch(err => res.json('server error'));
 }
 
 // / users/admin/posts/:id
+module.exports.getUnapprovedPostByID = (req, res) => {
+    const id = req.params.id;
+
+    Post.findById(id)
+    .then(post => res.json(post))
+    .catch(err => res.json('server error'));
+}
+
 module.exports.patchApprovedPost = (req, res) => {
     const id = req.params.id;
 
