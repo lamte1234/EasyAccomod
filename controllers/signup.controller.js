@@ -15,8 +15,6 @@ module.exports.postRenter = (req, res) => {
     const newRenter = new Renter(dataRenter);
     newRenter.save()
     .then(renter => {
-        req.session.user = renter._id;
-        req.session.user_type = 'renter';
         res.status(200).json(renter); 
     })
     .catch(err => console.log('server error'));
@@ -38,8 +36,6 @@ module.exports.postOwner = (req, res) => {
     const newOwner = new Owner(dataOwner);
     newOwner.save()
     .then(owner => {
-        req.session.user = owner._id;
-        req.session.user_type = 'owner';
         res.status(200).json(owner);
     })
     .catch(err => console.log(err));

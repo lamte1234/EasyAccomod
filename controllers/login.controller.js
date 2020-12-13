@@ -26,9 +26,8 @@ module.exports.postLogin = async (req, res) => {
         ...user._doc
     }
     
-    req.session.user_type = user_type;
-    req.session.user = user._doc._id;
-    console.log(req.session.cookie);
+    res.cookie('userType', user_type, {signed: true});
+    res.cookie('userId', user._doc._id, {signed: true});
     res.status(200).json(data); // manage data sent later
 };
 

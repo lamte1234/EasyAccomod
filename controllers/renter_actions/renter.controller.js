@@ -24,7 +24,7 @@ module.exports.getPostByID = (req, res) => {
 
 // users/renter/wishlist
 module.exports.wishlist = (req, res) => {
-    const id = req.session.user;
+    const id = req.signedCookies.userId;
 
     Wishlist.find({renter_id: id})
     .then(wishlist => res.json(wishlist.post_list))
@@ -34,7 +34,7 @@ module.exports.wishlist = (req, res) => {
 // users/renter/wishlist/:id
 module.exports.addWishlist = (req, res) => {
     const id = req.params.id;
-    const renter_id = req.session.user;
+    const renter_id = req.signedCookies.userId;
 
     let step = 1;
 

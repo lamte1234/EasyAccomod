@@ -5,7 +5,7 @@ const Admin = require('../models/admin.model');
 
 // /users/renter
 module.exports.renter = (req, res) => {
-    const id = req.session.user;
+    const id = req.signedCookies.userId;
 
     Renter.findById(id)
     .then(renter => res.json(renter))
@@ -14,7 +14,7 @@ module.exports.renter = (req, res) => {
 
 // /users/owner
 module.exports.admin = (req, res) => {
-    const id = req.session.user;
+    const id = req.signedCookies.userId;
 
     Admin.findById(id)
     .then(admin => res.json(admin))
@@ -23,7 +23,7 @@ module.exports.admin = (req, res) => {
 
 // /users/admin
 module.exports.owner = (req, res) => {
-    const id = req.session.user;
+    const id = req.signedCookies.userId;
 
     Owner.findById(id)
     .then(owner => res.json(owner))
