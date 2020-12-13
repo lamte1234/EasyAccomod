@@ -3,9 +3,9 @@ const Renter = require('../../models/owner.model');
 const Wishlist = require('../../models/wishlist.model');
 // sửa lại theo form nhập liệu sau
 // /users/renter/search
-module.exports.postSearch = (req, res) => {
+module.exports.getSearch = (req, res) => {
     const data = {
-        ...req.body
+        ...req.query
     }
 
     Post.find(data)

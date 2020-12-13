@@ -5,7 +5,7 @@ const router = express.Router();
 const controllers = require('../../controllers/renter_actions/renter.controller')
 
 // /users/renter/search
-router.post('/search', controllers.postSearch);
+router.get('/search', controllers.getSearch);
 // /users/renter/post/:id
 router.get('/post/:id', controllers.getPostByID);
 // /users/renter/wishlist

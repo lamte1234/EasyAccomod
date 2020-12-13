@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URL,
     {useUnifiedTopology: true, 
     useNewUrlParser: true,
-    useFindAndModify: true});
+    useFindAndModify: false});
 
 const signupRoutes = require('./routes/signup.route');
 const loginRoutes = require('./routes/login.route');
