@@ -26,6 +26,9 @@ const postSchema = mongoose.Schema({
     status: Boolean,
     is_approved: Boolean, // not in form
     time: String, // week 1-4
+    owner: String,
+    email: String,
+    phone: Number,
     likes: Number, // not in form
     views: Number, // not in form
 });

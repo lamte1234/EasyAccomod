@@ -6,6 +6,9 @@ module.exports.postValidation = (req, res, next) => {
     const postString_re = /^[a-zA-Z0-9\s]+$/;
     const area_re = /^[1-9][0-9]*[,.]{0,1}[0-9]*$/;
     const money_re = /^[1-9][0-9]*$/;
+    const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
+    const email_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const phone_re = /^[0-9]{10}$/;
 
     // title
     if (!req.body.title) { errors.push('Title is required.') }
@@ -106,6 +109,31 @@ module.exports.postValidation = (req, res, next) => {
         res.json(data);
         return;
     }
+    
+    // owner 
+    if (!req.body.name) {
+        errors.push('Name is required.');
+    }
+    if(req.body.name && !req.body.name.match(name_re)){
+        errors.push('Name must be non-special text.')
+    }
 
+    // email
+    if (!req.body.email) {
+        errors.push('Email is required.');
+    }
+    if(req.body.email && !req.body.email.match(email_re)){
+        errors.push('Invalid email.');
+    }
+
+    // phone
+    if (!req.body.phone) {
+        errors.push('Phone is required');
+    }
+    if(req.body.phone && !req.body.phone.match(phone_re)){
+        errors.push('Phone must have 10 digits.');
+    }
+    
     next();
+    
 }
