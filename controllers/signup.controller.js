@@ -1,10 +1,11 @@
 
 const Renter = require('../models/renter.model');
-const Owner = require('../models/owner.model')
+const Owner = require('../models/owner.model');
+const Wishlist = require('../models/wishlist.model');
 const md5 = require('md5');
 
 
-module.exports.postRenter = (req, res) => {
+module.exports.postRenter = async (req, res) => {
     const extraPass = req.body.password + process.env.PASSWORD_EXTRA_SECRET;
     const dataRenter = {
         email: req.body.email,
@@ -12,13 +13,12 @@ module.exports.postRenter = (req, res) => {
         password: md5(extraPass)
     };
     
-    const newRenter = new Renter(dataRenter);
-    newRenter.save()
-    .then(renter => {
-        res.status(200).json(renter); 
-    })
-    .catch(err => console.log('server error'));
     
+    const newRenter = await new Renter(dataRenter).save();
+    console.log('new renter created');
+    const newWishlist = await new Wishlist({renter_id: newRenter._id, post_list: []}).save();
+    console.log('new wishlist created');
+    res.status(200).json(newRenter);
 };
 
 module.exports.postOwner = (req, res) => {

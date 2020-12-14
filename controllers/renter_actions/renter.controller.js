@@ -15,7 +15,7 @@ module.exports.getSearch = (req, res) => {
 
 // /users/renter/post/:id
 module.exports.getPostByID = (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id;   
 
     Post.findByIdAndUpdate(id, {$inc: {views: 1}})
     .then(post => res.json(post))  // post before increasing view
@@ -28,7 +28,7 @@ module.exports.wishlist = (req, res) => {
 
     Wishlist.find({renter_id: id})
     .then(wishlist => res.json(wishlist.post_list))
-    .catch(err).catch(error => res.status(400).json('error' + error));
+    .catch(err => console.log(err));
 }
 
 // users/renter/wishlist/:id
@@ -36,15 +36,12 @@ module.exports.addWishlist = (req, res) => {
     const id = req.params.id;
     const renter_id = req.signedCookies.userId;
 
-    let step = 1;
-
     Post.findByIdAndUpdate(id, {$inc: {likes: 1}})
-    .then(post => step = 2)
+    .then(post => console.log('increase post likes'))
     .catch(err => res.json('server error'));
 
-    if(step === 2){
-        Wishlist.findOneAndUpdate({renter_id: renter_id}, {$push: {post_list: id}})
-        .then(wishlist => res.status(200).json('success'))
-        .catch(err => res.json('server error'));
-    }
+    Wishlist.findOneAndUpdate({renter_id: renter_id}, {$push: {post_list: id}})
+    .then(wishlist => {res.status(200).json('success')})
+    .catch(err => res.json('server error'));
+
 }
