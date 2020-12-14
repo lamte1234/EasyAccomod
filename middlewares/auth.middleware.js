@@ -1,96 +1,100 @@
-module.exports.auth = (req, res, next) => {
-    if(!req.sessionID){
-        res.status(401).send('Access Denied.');
+const Admin = require('../models/admin.model');
+const Renter = require('../models/renter.model');
+const Owner = require('../models/owner.model');
+
+
+module.exports.adminAuth =  (req, res, next) => {
+    if(!req.signedCookies.userId){
+        res.status(401).send('Access denied');
         return;
     }
 
-
-    if(!req.cookies.sid){
-        res.status(401).send('Access Denied.');
+    if(!req.signedCookies.userType){
+        res.status(401).send('Access denied');
         return;
     }
 
-    if(req.cookies.sid !== req.sessionID){
-        res.status(401).send('Access Denied.');
+    if(req.signedCookies.userType !== 'admin'){
+        res.status(401).send('Access denied');
         return;
     }
 
-    if(req.sessionID && req.cookies.sid && req.sessionID !== req.cookies.sid){
-        res.status(401).send('Access Denied.');
+    if(req.signedCookies.userId){
+        Admin.findById(req.signedCookies.userId)
+        .then(admin => {
+            if(admin){
+                console.log('user logged in');
+            }
+            else if(!admin){
+                res.status(401).send('Access denied');
+                return;
+            }
+        })
+        .catch(err => console.log(err))
+    }
+    next();
+}
+
+module.exports.renterAuth = (req, res, next) => {
+    if(!req.signedCookies.userId){
+        res.status(401).send('Access denied');
+        return;
+    }
+
+    if(!req.signedCookies.userType){
+        res.status(401).send('Access denied');
+        return;
+    }
+
+    if(req.signedCookies.userType !== 'renter'){
+        res.status(401).send('Access denied');
+        return;
+    }
+
+    if(req.signedCookies.userId){
+        Renter.findById(req.signedCookies.userId)
+        .then(renter => {
+            if(renter){
+                console.log('user logged in');
+            }
+            else if(!renter){
+                res.status(401).send('Access denied');
+                return;
+            }
+        })
+        .catch(err => console.log(err))
+    }
+    next();
+}
+
+module.exports.ownerAuth = async (req, res, next) => {
+    if(!req.signedCookies.userId){
+        res.status(401).send('Access denied');
+        return;
+    }
+
+    if(!req.signedCookies.userType){
+        res.status(401).send('Access denied');
+        return;
+    }
+
+    if(req.signedCookies.userType !== 'owner'){
+        res.status(401).send('Access denied');
+        return;
+    }
+
+    
+    const owner = await Owner.findById(req.signedCookies.userId);
+
+    if(owner._doc.is_approved === false){
+        res.status(401).send('Access denied');
+        return;
+    }
+    if(!owner){
+        res.status(401).send('Access denied');
         return;
     }
     
     next();
 }
 
-module.exports.adminAuth = (req, res, next) => {
-    if(!req.sessionID){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(!req.cookies.sid){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(req.sessionID && req.cookies.sid && req.sessionID !== req.cookies.sid){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(req.session.user_type !== 'admin') {
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    next();
-}
-
-module.exports.renterAuth = (req, res, next) => {
-    if(!req.sessionID){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(!req.cookies.sid){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(req.sessionID && req.cookies.sid && req.sessionID !== req.cookies.sid){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(req.session.user_type !== 'renter') {
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    next();
-}
-
-module.exports.adminAuth = (req, res, next) => {
-    if(!req.sessionID){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(!req.cookies.sid){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(req.sessionID && req.cookies.sid && req.sessionID !== req.cookies.sid){
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    if(req.session.user_type !== 'owner') {
-        res.status(401).send('Access Denied.');
-        return;
-    }
-
-    next();
-}

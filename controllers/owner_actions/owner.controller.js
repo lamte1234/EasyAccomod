@@ -32,7 +32,7 @@ module.exports.postOwnerPost = (req, res) => {
 
 // /users/owner/edit show list of owners post
 module.exports.getOwnerPost = (req, res) => {
-    Post.find({owner_id: req.singedCookies.userId,
+    Post.find({owner_id: req.signedCookies.userId,
                 is_approved: false})
     .then(posts => res.json(posts))
     .catch(err => res.json('server error'));

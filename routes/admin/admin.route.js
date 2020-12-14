@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controllers = require('../../controllers/admin_actions/admin.controller');
+const authMiddlewares = require('../../middlewares/auth.middleware');
 
 // /users/admin/accounts
 router.get('/accounts', controllers.getUnapprovedOwners);
