@@ -1,7 +1,7 @@
 const Post = require('../../models/post.model');
 const Renter = require('../../models/owner.model');
 const Wishlist = require('../../models/wishlist.model');
-// sửa lại theo form nhập liệu sau
+
 // /users/renter/search
 module.exports.getSearch = (req, res) => {
     const data = {
@@ -44,4 +44,11 @@ module.exports.addWishlist = (req, res) => {
     .then(wishlist => {res.status(200).json('success')})
     .catch(err => res.json('server error'));
 
+}
+
+// /users/renter/explore
+module.exports.getExplore = (req, res) => {
+    Post.find()
+    .then(posts => res.status(200).json(posts))
+    .catch(err => res.json('server error'))
 }

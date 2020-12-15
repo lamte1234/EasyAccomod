@@ -4,6 +4,8 @@ const router = express.Router();
 
 const controllers = require('../../controllers/renter_actions/renter.controller')
 
+// /users/renter/explore
+router.get('/explore', controllers.getExplore);
 // /users/renter/search
 router.get('/search', controllers.getSearch);
 // /users/renter/post/:id
