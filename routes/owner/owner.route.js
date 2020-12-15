@@ -4,15 +4,21 @@ const multer = require('multer');
 const uploads = multer({dest: 'static/uploads/'});
 
 const controllers = require('../../controllers/owner_actions/owner.controller');
-const middlewares = require('../../middlewares/post.middleware');
+const postMiddlewares = require('../../middlewares/post.middleware');
+const accountMiddlewares = require('../../middlewares/account.middleware');
+const editAuthMiddlewares = require('../../middlewares/auth.middleware');
+
 
 // /users/owner/post
-router.post('/post', uploads.array('image', 5), middlewares.postValidation, 
+router.post('/post', uploads.array('image', 5), postMiddlewares.postValidation, 
             controllers.postOwnerPost);
 // /users/owner/edit
 router.get('/edit', controllers.getOwnerPost)
 // /users/owner/edit/:id
 router.get('/edit/:id', controllers.getOwnerPostByID);
 router.put('/edit/:id', controllers.putEditOwnerPostByID);
+// /users/owner/account
+router.get('/account', controllers.getOwnerAccount);
+router.put('/account', editAuthMiddlewares.ownerEditAccountAuth, accountMiddlewares.ownerChangeAccount, controllers.putOwnerAccountChange);
 
 module.exports = router;

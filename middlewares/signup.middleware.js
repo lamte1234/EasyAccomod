@@ -63,8 +63,10 @@ module.exports.postOwner = async (req, res, next) => {
     const email_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const phone_re = /^[0-9]{10}$/;
     const id_num_re = /^[a-zA-Z0-9]{16}$/;
-    const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/
-    const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/
+    const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/;
+    const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
+    const address_re = /^[a-zA-Z0-9\s]+$/;
+
 
     if (!req.body.email) {
         errors.push('Email is required');
@@ -95,11 +97,15 @@ module.exports.postOwner = async (req, res, next) => {
     }
 
     if(req.body.phone && !req.body.phone.match(phone_re)){
-        errors.push('Phone must have 10 digits.');
+        errors.push('Phone must have 10 digits');
     }
 
     if (!req.body.address) {
         errors.push('Address is required');
+    }
+
+    if(req.body.address && !req.body.address.match(address_re)) {
+        errors.push('Invalid address');
     }
 
     if (!req.body.password) {
@@ -118,7 +124,7 @@ module.exports.postOwner = async (req, res, next) => {
     const owner = await Owner.findOne({email: req.body.email});
 
     if (owner) {
-        errors.push('Existing email.');
+        errors.push('Existing email');
     }
 
     if (errors.length) {

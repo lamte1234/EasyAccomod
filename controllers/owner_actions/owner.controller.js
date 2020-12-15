@@ -58,3 +58,24 @@ module.exports.putEditOwnerPostByID = (req, res) => {
     .then(post => res.status(200).json('success'))
     .catch(err => res.json('server error'))
 }
+
+// /users/owner/account
+module.exports.getOwnerAccount = (req, res) => {
+    const owner_id = req.signedCookies.userId;
+
+    Owner.findById(owner_id)
+    .then(owner => res.status(200).json(owner))
+    .catch(err => res.json('server error'));
+}
+
+module.exports.putOwnerAccountChange = (req, res) => {
+    const owner_id = req.signedCookies.userId;
+    const data = {
+        ...req.body,
+        is_approved: false
+    };
+
+    Owner.findByIdAndUpdate(owner_id, data)
+    .then(owner => res.status(200).json('success'))
+    .catch(err => console.log(err));
+}

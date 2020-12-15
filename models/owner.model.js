@@ -7,7 +7,8 @@ const ownerSchema = new mongoose.Schema({
     id_card_number: String,
     address: String,
     phone: String,
-    is_approved: Boolean
+    is_approved: Boolean,
+    editable: Boolean
 });
 
 const Owner = mongoose.model('Owner', ownerSchema, 'owner_account');

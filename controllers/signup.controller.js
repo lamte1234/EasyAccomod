@@ -30,7 +30,8 @@ module.exports.postOwner = (req, res) => {
         phone: req.body.phone,
         address: req.body.address,
         password: md5(extraPass),
-        is_approved: false
+        is_approved: false,
+        editable: false
     };
 
     const newOwner = new Owner(dataOwner);
