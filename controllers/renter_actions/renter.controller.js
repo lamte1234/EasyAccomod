@@ -1,6 +1,7 @@
 const Post = require('../../models/post.model');
 const Renter = require('../../models/owner.model');
 const Wishlist = require('../../models/wishlist.model');
+const Owner = require('../../models/owner.model');
 
 // /users/renter/search
 module.exports.getSearch = (req, res) => {
@@ -48,7 +49,7 @@ module.exports.addWishlist = (req, res) => {
 
 // /users/renter/explore
 module.exports.getExplore = (req, res) => {
-    Post.find()
-    .then(posts => res.status(200).json(posts))
-    .catch(err => res.json('server error'))
+    Post.find({is_approved: true}).populate('owner_id')
+    .then(post => res.status(200).json(post))
+    .catch(err => res.json('server error'));
 }

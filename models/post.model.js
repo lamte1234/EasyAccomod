@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 
 const postSchema = mongoose.Schema({
-    owner_id: mongoose.Schema.Types.ObjectId, // not in form
+    owner_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Owner'}, // not in form
     title: String,
     // address
     city: String,

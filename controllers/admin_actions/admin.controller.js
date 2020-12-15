@@ -45,7 +45,7 @@ module.exports.getUnapprovedPosts = (req, res) => {
 module.exports.getUnapprovedPostByID = (req, res) => {
     const id = req.params.id;
 
-    Post.findById(id)
+    Post.findById(id).populate('owner_id')
     .then(post => res.json(post))
     .catch(err => res.json('server error'));
 }
