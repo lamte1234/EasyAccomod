@@ -22,10 +22,7 @@ module.exports.adminAuth =  (req, res, next) => {
     if(req.signedCookies.userId){
         Admin.findById(req.signedCookies.userId)
         .then(admin => {
-            if(admin){
-                console.log('user logged in');
-            }
-            else if(!admin){
+            if(!admin){
                 res.status(401).send('Access denied');
                 return;
             }
@@ -55,10 +52,7 @@ module.exports.renterAuth = (req, res, next) => {
     if(req.signedCookies.userId){
         Renter.findById(req.signedCookies.userId)
         .then(renter => {
-            if(renter){
-                console.log('user logged in');
-            }
-            else if(!renter){
+            if(!renter){
                 res.status(401).send('Access denied');
                 return;
             }
@@ -89,15 +83,16 @@ module.exports.ownerAuth = async (req, res, next) => {
     
     const owner = await Owner.findById(req.signedCookies.userId);
 
-    if(owner._doc.is_approved === false){
-        res.status(401).send('Access denied');
-        return;
-    }
     if(!owner){
         res.status(401).send('Access denied');
         return;
     }
-    
+
+    if(owner._doc.is_approved === false){
+        res.status(401).send('Access denied');
+        return;
+    }
+
     next();
 }
 

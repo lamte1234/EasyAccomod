@@ -10,7 +10,6 @@ module.exports.postOwnerPost = (req, res) => {
         images.push(file_dir);
     })
 
-    console.log(req.signedCookies);
     const owner_id  = req.signedCookies.userId;
 
     const data = {
@@ -21,8 +20,7 @@ module.exports.postOwnerPost = (req, res) => {
         likes: 0,
         views: 0,
         image: images
-    }
-    console.log(data);
+    };
 
     const newPost = new Post(data);
     newPost.save()

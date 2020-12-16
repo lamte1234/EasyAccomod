@@ -65,7 +65,7 @@ module.exports.postOwner = async (req, res, next) => {
     const id_num_re = /^[a-zA-Z0-9]{16}$/;
     const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/;
     const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
-    const address_re = /^[a-zA-Z0-9\s]+$/;
+    const address_re = /^[a-zA-Z0-9.,\s]+$/;
 
 
     if (!req.body.email) {

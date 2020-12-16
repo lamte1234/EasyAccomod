@@ -10,7 +10,6 @@ module.exports.getSearch = (req, res) => {
         is_approved: true,
         status: true
     }
-
     Post.find(data)
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(500).send('server error'));

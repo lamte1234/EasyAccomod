@@ -4,6 +4,9 @@ const multer = require('multer');
 const uploads = multer({dest: 'static/uploads/'});
 
 const controllers = require('../../controllers/owner_actions/owner.controller');
+const userControllers = require('../../controllers/users.controller');
+
+const changePassMiddleware = require('../../middlewares/account.middleware');
 const postMiddlewares = require('../../middlewares/post.middleware');
 const accountMiddlewares = require('../../middlewares/account.middleware');
 const editAuthMiddlewares = require('../../middlewares/auth.middleware');
@@ -20,5 +23,8 @@ router.put('/edit/:id', controllers.putEditOwnerPostByID);
 // /users/owner/account
 router.get('/account', controllers.getOwnerAccount);
 router.put('/account', editAuthMiddlewares.ownerEditAccountAuth, accountMiddlewares.ownerChangeAccount, controllers.putOwnerAccountChange);
+// /users/owner/change-password
+router.patch('/change-password', changePassMiddleware.usersChangePassword, userControllers.patchChangePassword);
+
 
 module.exports = router;

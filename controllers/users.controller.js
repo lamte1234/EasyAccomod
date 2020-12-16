@@ -1,6 +1,7 @@
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model');
 const Admin = require('../models/admin.model');
+const md5 = require('md5');
 
 
 // /users/renter
@@ -12,7 +13,7 @@ module.exports.renter = (req, res) => {
     .catch(error => res.status(500).send('server error'));
 }
 
-// /users/owner
+// /users/admin
 module.exports.admin = (req, res) => {
     const id = req.signedCookies.userId;
 
@@ -21,11 +22,37 @@ module.exports.admin = (req, res) => {
     .catch(error => res.status(500).send('server error'));
 }
 
-// /users/admin
+// /users/owner
 module.exports.owner = (req, res) => {
     const id = req.signedCookies.userId;
 
     Owner.findById(id)
     .then(owner => res.status(200).json(owner))
     .catch(error => res.status(500).send('server error'));
+}
+
+// /users/[admin, renter, owner]/change-password
+module.exports.patchChangePassword = async (req, res) => {
+    const id = req.signedCookies.userId;
+    const user_type = req.signedCookies.userType;
+    let user;
+
+    const newPassword = md5(req.body.new_password + process.env.PASSWORD_EXTRA_SECRET);
+
+    if(user_type === "renter"){
+        user = await Renter.findByIdAndUpdate(id, {password: newPassword});
+    }
+    else if(user_type === "owner"){
+        user = await Owner.findByIdAndUpdate(id, {password: newPassword});
+    }
+    else if(user_type === "admin"){
+        user = await Admin.findByIdAndUpdate(id, {password: newPassword});
+    }
+
+    if(user) {
+        res.status(200).send("success");
+    }
+    else{
+        res.status(500).send("server error");
+    }
 }

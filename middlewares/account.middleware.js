@@ -1,3 +1,8 @@
+const Renter = require("../models/renter.model");
+const Owner = require("../models/owner.model");
+const Admin = require("../models/admin.model");
+const md5 = require("md5");
+
 module.exports.ownerChangeAccount = (req, res, next) => {
     let errors = [];
     
@@ -36,6 +41,57 @@ module.exports.ownerChangeAccount = (req, res, next) => {
 
     if(req.body.address && !req.body.address.match(address_re)) {
         errors.push('Invalid address');
+    }
+
+    if (errors.length) {
+        const data = {
+            errors: errors
+        };
+        res.json(data);
+        return;
+    }
+
+    next();
+}
+
+module.exports.usersChangePassword = async (req, res, next) => {
+    const id = req.signedCookies.userId;
+    const user_type = req.signedCookies.userType;
+    const current_password = md5(req.body.current_password + process.env.PASSWORD_EXTRA_SECRET);
+    const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/;
+    let model;
+
+    if(user_type === "renter") {
+        model = Renter;
+    }
+    else if( user_type === "owner") {
+        model = Owner;
+    }
+    else if(user_type === "admin") {
+        model = Admin;
+    }
+
+    let errors = [];
+
+    const user = await model.findById(id);
+
+
+    if(!req.body.current_password || !req.body.new_password || !req.body.cf_pass) {
+        errors.push('Password is required')
+    }
+
+    if(req.body.current_password && current_password !== user.password){
+        errors.push("Wrong password") 
+    }
+
+    if((req.body.current_password && !req.body.current_password.match(password_re)) ||
+        (req.body.new_password && !req.body.new_password.match(password_re)) ||
+        (req.body.cf_pass && !req.body.cf_pass.match(password_re))){
+        errors.push('Password must have 6-13 non-special characters')
+    }
+
+    if (req.body.new_password !== req.body.cf_pass) {
+        errors.push('Password must match');
     }
 
     if (errors.length) {
