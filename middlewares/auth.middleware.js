@@ -104,7 +104,7 @@ module.exports.ownerAuth = async (req, res, next) => {
 module.exports.ownerEditAccountAuth = async (req, res, next) => {
     const owner = await Owner.findById(req.signedCookies.userId);
 
-    if(owner._doc._editable === false){
+    if(owner._doc.editable === false){
         res.status(401).send('Access denied');
         return;
     }

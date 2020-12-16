@@ -13,12 +13,9 @@ module.exports.postRenter = async (req, res) => {
         password: md5(extraPass)
     };
     
-    
     const newRenter = await new Renter(dataRenter).save();
-    console.log('new renter created');
     const newWishlist = await new Wishlist({renter_id: newRenter._id, post_list: []}).save();
-    console.log('new wishlist created');
-    res.status(200).json(newRenter);
+    res.status(201).json(newRenter);
 };
 
 module.exports.postOwner = (req, res) => {
@@ -37,9 +34,9 @@ module.exports.postOwner = (req, res) => {
     const newOwner = new Owner(dataOwner);
     newOwner.save()
     .then(owner => {
-        res.status(200).json(owner);
+        res.status(201).json(owner);
     })
-    .catch(err => console.log(err));
+    .catch(err => res.status(500).send('server error'));
     
     
 }

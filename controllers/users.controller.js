@@ -8,8 +8,8 @@ module.exports.renter = (req, res) => {
     const id = req.signedCookies.userId;
 
     Renter.findById(id)
-    .then(renter => res.json(renter))
-    .catch(error => res.status(400).json('error:' + error));
+    .then(renter => res.status(200).json(renter))
+    .catch(error => res.status(500).send('server error'));
 }
 
 // /users/owner
@@ -17,8 +17,8 @@ module.exports.admin = (req, res) => {
     const id = req.signedCookies.userId;
 
     Admin.findById(id)
-    .then(admin => res.json(admin))
-    .catch(error => res.status(400).json('error' + error));
+    .then(admin => res.status(200).json(admin))
+    .catch(error => res.status(500).send('server error'));
 }
 
 // /users/admin
@@ -26,6 +26,6 @@ module.exports.owner = (req, res) => {
     const id = req.signedCookies.userId;
 
     Owner.findById(id)
-    .then(owner => res.json(owner))
-    .catch(error => res.status(400).json('error' + error));
+    .then(owner => res.status(200).json(owner))
+    .catch(error => res.status(500).send('server error'));
 }

@@ -26,24 +26,24 @@ module.exports.postOwnerPost = (req, res) => {
 
     const newPost = new Post(data);
     newPost.save()
-    .then(post => res.status(200).json('success'))
-    .catch(err => console.log(err));
+    .then(post => res.status(201).send('success'))
+    .catch(err => res.status(500).send('server error'));
 }
 
 // /users/owner/edit show list of owners post
 module.exports.getOwnerPost = (req, res) => {
     Post.find({owner_id: req.signedCookies.userId,
                 is_approved: false})
-    .then(posts => res.json(posts))
-    .catch(err => res.json('server error'));
+    .then(posts => res.status(200).json(posts))
+    .catch(err => res.status(500).send('server error'));
 }
 
 
 // /users/owner/edit/:id
 module.exports.getOwnerPostByID = (req, res) => {
     Post.findById(req.params.id)
-    .then(post => res.json(post))
-    .catch(err => res.json('server error'));
+    .then(post => res.status(200).json(post))
+    .catch(err => res.status(500).send('server error'));
 }
 
 module.exports.putEditOwnerPostByID = (req, res) => {
@@ -55,8 +55,8 @@ module.exports.putEditOwnerPostByID = (req, res) => {
     };
 
     Post.findByIdAndUpdate(id, data)
-    .then(post => res.status(200).json('success'))
-    .catch(err => res.json('server error'))
+    .then(post => res.status(200).send('success'))
+    .catch(err => res.status(500).send('server error'))
 }
 
 // /users/owner/account
@@ -65,7 +65,7 @@ module.exports.getOwnerAccount = (req, res) => {
 
     Owner.findById(owner_id)
     .then(owner => res.status(200).json(owner))
-    .catch(err => res.json('server error'));
+    .catch(err => res.status(500).send('server error'));
 }
 
 module.exports.putOwnerAccountChange = (req, res) => {
@@ -76,6 +76,6 @@ module.exports.putOwnerAccountChange = (req, res) => {
     };
 
     Owner.findByIdAndUpdate(owner_id, data)
-    .then(owner => res.status(200).json('success'))
-    .catch(err => console.log(err));
+    .then(owner => res.status(200).send('success'))
+    .catch(err => res.status(500).send('server error'));
 }
