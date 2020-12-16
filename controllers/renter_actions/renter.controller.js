@@ -19,7 +19,7 @@ module.exports.getSearch = (req, res) => {
 module.exports.getPostByID = (req, res) => {
     const id = req.params.id;   
 
-    Post.findByIdAndUpdate(id, {$inc: {views: 1}})
+    Post.findByIdAndUpdate(id, {$inc: {views: 1}}).populate('owner_id')
     .then(post => res.status(200).json(post))  // post before increasing view
     .catch(err => res.status(500).send('server error'));
 }
