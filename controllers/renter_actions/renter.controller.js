@@ -1,7 +1,7 @@
 const Post = require('../../models/post.model');
-const Renter = require('../../models/owner.model');
 const Wishlist = require('../../models/wishlist.model');
-const Owner = require('../../models/owner.model');
+const Review = require('../../models/review.model');
+const { model } = require('../../models/post.model');
 
 // /users/renter/search
 module.exports.getSearch = (req, res) => {
@@ -52,5 +52,28 @@ module.exports.addWishlist = (req, res) => {
 module.exports.getExplore = (req, res) => {
     Post.find({is_approved: true}).populate('owner_id')
     .then(post => res.status(200).json(post))
+    .catch(err => res.status(500).send('server error'));
+}
+
+// /users/renter/review/:id
+module.exports.postReviewByPostID = (req, res) => {
+    const dataReview = {
+        renter_id:  req.signedCookies.userId,
+        post_id: req.params.id,
+        star: req.body.star,
+        review: req.body.review
+    }
+
+    const newReview = new Review(dataReview);
+    newReview.save()
+    .then(review => res.status(201).send('success'))
+    .catch(err => res.status(500).send('server error'));
+}
+
+module.exports.getAllReviewsByPostID = (req, res) => {
+    const post_id = req.params.id;
+
+    Review.find({post_id: post_id}).populate('renter_id', 'name')
+    .then(reviews => res.status(200).json(reviews))
     .catch(err => res.status(500).send('server error'));
 }

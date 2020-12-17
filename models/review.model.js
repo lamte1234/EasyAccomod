@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const reviewSchema = mongoose.Schema({
-    renter_id: mongoose.Schema.Types.ObjectId,
-    post_id: mongoose.Schema.Types.ObjectId,
+    renter_id: {type: mongoose.SchemaTypes.ObjectId, ref: 'Renter'},
+    post_id: {type: mongoose.SchemaTypes.ObjectId, ref: 'Post'},
     review: String,
     star: Number,
     is_approved: Boolean

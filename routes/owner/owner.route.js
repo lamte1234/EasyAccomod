@@ -10,6 +10,7 @@ const changePassMiddleware = require('../../middlewares/account.middleware');
 const postMiddlewares = require('../../middlewares/post.middleware');
 const accountMiddlewares = require('../../middlewares/account.middleware');
 const editAuthMiddlewares = require('../../middlewares/auth.middleware');
+const editPostMiddlewares = require('../../middlewares/edit_post.middleware');
 
 
 // /users/owner/post
@@ -19,7 +20,7 @@ router.post('/post', uploads.array('image', 5), postMiddlewares.postValidation,
 router.get('/edit', controllers.getOwnerPost)
 // /users/owner/edit/:id
 router.get('/edit/:id', controllers.getOwnerPostByID);
-router.put('/edit/:id', controllers.putEditOwnerPostByID);
+router.put('/edit/:id', editPostMiddlewares.ownerEditPost, controllers.putEditOwnerPostByID);
 // /users/owner/account
 router.get('/account', controllers.getOwnerAccount);
 router.put('/account', editAuthMiddlewares.ownerEditAccountAuth, accountMiddlewares.ownerChangeAccount, controllers.putOwnerAccountChange);

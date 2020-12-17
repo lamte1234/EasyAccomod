@@ -1,6 +1,5 @@
 const Post = require('../../models/post.model');
 const Owner = require('../../models/owner.model');
-const { owner } = require('../users.controller');
 
 
 // /users/owner/post
@@ -48,9 +47,8 @@ module.exports.getOwnerPostByID = (req, res) => {
 module.exports.putEditOwnerPostByID = (req, res) => {
     const id = req.params.id;
     const data = {
-        ...req.body, // req.body must have status field
-        is_approved: false,
-        owner_id: req.signedCookies.userId,
+        ...req.body, 
+        is_approved: false
     };
 
     Post.findByIdAndUpdate(id, data)
