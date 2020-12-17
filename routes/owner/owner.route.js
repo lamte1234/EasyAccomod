@@ -25,6 +25,8 @@ router.get('/account', controllers.getOwnerAccount);
 router.put('/account', editAuthMiddlewares.ownerEditAccountAuth, accountMiddlewares.ownerChangeAccount, controllers.putOwnerAccountChange);
 // /users/owner/change-password
 router.patch('/change-password', changePassMiddleware.usersChangePassword, userControllers.patchChangePassword);
-
-
+// /users/owner/all-post
+router.get('/all-post', controllers.getAllPost);
+// /user/owner/change-status/:id
+router.patch('/change-status/:id', controllers.patchPostStatus);
 module.exports = router;

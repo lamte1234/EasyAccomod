@@ -1,5 +1,6 @@
 const Post = require('../../models/post.model');
 const Owner = require('../../models/owner.model');
+const { owner } = require('../users.controller');
 
 
 // /users/owner/post
@@ -75,5 +76,29 @@ module.exports.putOwnerAccountChange = (req, res) => {
 
     Owner.findByIdAndUpdate(owner_id, data)
     .then(owner => res.status(200).send('success'))
+    .catch(err => res.status(500).send('server error'));
+}
+
+// /users/owner/all-post 
+module.exports.getAllPost = (req, res) => {
+    const owner_id = req.signedCookies.userId;
+    
+    Post.find({owner_id: owner_id})
+    .then(posts => res.status(200).json(posts))
+    .catch(err => res.status(500).send('server error'));
+}
+
+// /users/owner/change-status/:id
+module.exports.patchPostStatus = (req, res) => {
+    const post_id = req.params.id;
+
+    Post.findById(post_id)
+    .then(post => {
+        post.status = !post.status;
+        post.save(err => {
+            if(err) {res.status(500).send('server error')}
+        })
+        res.status(200).send('success');
+    })
     .catch(err => res.status(500).send('server error'));
 }
