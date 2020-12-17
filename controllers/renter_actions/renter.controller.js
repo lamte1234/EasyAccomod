@@ -28,7 +28,7 @@ module.exports.getPostByID = (req, res) => {
 module.exports.wishlist = (req, res) => {
     const id = req.signedCookies.userId;
 
-    Wishlist.find({renter_id: id})
+    Wishlist.findOne({renter_id: id}).populate('post_list')
     .then(wishlist => res.status(200).json(wishlist.post_list))
     .catch(err => res.status(500).send('server error'));
 }

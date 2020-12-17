@@ -1,6 +1,7 @@
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model');
 const Admin = require('../models/admin.model');
+const Wishlist = require('../models/wishlist.model');
 
 
 // /login
@@ -19,11 +20,16 @@ module.exports.postLogin = async (req, res) => {
 
     const user = await model.findOne({email: req.body.email});
 
-    let user_type = req.body.account_type.replace('_account', '');
+    const user_type = req.body.account_type.replace('_account', '');
 
-    const data = {
+    let data = {
         user_type: user_type,
         ...user._doc
+    }
+
+    if(user_type === 'renter') {
+        const wishlist = await Wishlist.findOne({renter_id: user._doc._id});
+        data.wishlist = wishlist.post_list;
     }
     
     res.cookie('userType', user_type, {signed: true});

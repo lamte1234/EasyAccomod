@@ -6,8 +6,8 @@ const Owner = require('../models/owner.model');
 module.exports.postRenter = async (req, res, next) => {
     let errors = [];
     const email_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/
-    const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/
+    const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/;
+    const name_re = /^[a-zA-Z0-9.\s!#$%&'*+/=?^_`{|}~-]+$/;
 
     if (!req.body.email) {
         errors.push('Email is required.');
@@ -64,7 +64,7 @@ module.exports.postOwner = async (req, res, next) => {
     const phone_re = /^[0-9]{10}$/;
     const id_num_re = /^[a-zA-Z0-9]{16}$/;
     const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/;
-    const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
+    const name_re = /^[a-zA-Z0-9.\s!#$%&'*+/=?^_`{|}~-]+$/;
     const address_re = /^[a-zA-Z0-9.,\s]+$/;
 
 
