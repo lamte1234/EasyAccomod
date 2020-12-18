@@ -11,7 +11,7 @@ const postMiddlewares = require('../../middlewares/post.middleware');
 const accountMiddlewares = require('../../middlewares/account.middleware');
 const editAuthMiddlewares = require('../../middlewares/auth.middleware');
 const editPostMiddlewares = require('../../middlewares/edit_post.middleware');
-
+const extendMiddleware = require('../../middlewares/extend.middleware')
 
 // /users/owner/post
 router.post('/post', uploads.array('image', 5), postMiddlewares.postValidation, 
@@ -30,4 +30,9 @@ router.patch('/change-password', changePassMiddleware.usersChangePassword, userC
 router.get('/all-post', controllers.getAllPost);
 // /user/owner/change-status/:id
 router.patch('/change-status/:id', controllers.patchPostStatus);
+// /users/owner/extend
+router.get('/extend', controllers.getOvertimePost);
+// /users/owner/extend/:id
+router.patch('/extend/:id', extendMiddleware.timeExtendValidation, controllers.patchOvertimePostByID);
+
 module.exports = router;

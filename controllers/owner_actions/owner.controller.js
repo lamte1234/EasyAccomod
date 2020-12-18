@@ -1,6 +1,6 @@
 const Post = require('../../models/post.model');
 const Owner = require('../../models/owner.model');
-
+const moment = require('moment');
 
 // /users/owner/post
 module.exports.postOwnerPost = (req, res) => {
@@ -99,4 +99,33 @@ module.exports.patchPostStatus = (req, res) => {
         res.status(200).send('success');
     })
     .catch(err => res.status(500).send('server error'));
+}
+
+// /users/owner/extend
+module.exports.getOvertimePost = (req, res) => {
+    const owner_id = req.signedCookies.userId;
+
+    Post.find({is_approved: true,
+                owner_id: owner_id})
+    .then(posts => {
+        let data = [];
+        posts.forEach(post => {
+            const week = parseInt(post.time);
+            const last_approve_time = post.approve_date;
+            const diff = moment.duration(moment() - last_approve_time).asWeeks();
+            if(diff >= week) {data.push(post)}
+        })
+        res.status(200).json(data);
+    })
+    .catch(err => res.status(500).send('server error'));
+}
+
+// /users/owner/extend/:id
+module.exports.patchOvertimePostByID = (req, res) => {
+    const post_id = req.params.id;
+
+    Post.findByIdAndUpdate(post_id, {is_approved: false,
+                                     approve_date: moment().toISOString()})
+    .then(post => res.status(200).send('success'))
+    .catch(err => console.log(err));
 }

@@ -61,7 +61,16 @@ module.exports.addWishlist = (req, res) => {
 // /users/renter/explore
 module.exports.getExplore = (req, res) => {
     Post.find({is_approved: true}).populate('owner_id')
-    .then(post => res.status(200).json(post))
+    .then(posts => {
+        let data = [];
+        posts.forEach(post => {
+            const week = parseInt(post.time);
+            const last_approve_time = post.approve_date;
+            const diff = moment.duration(moment() - last_approve_time).asWeeks();
+            if(diff <= week) {data.push(post)}
+        })
+        res.status(200).json(data)
+    })
     .catch(err => res.status(500).send('server error'));
 }
 
