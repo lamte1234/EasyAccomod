@@ -1,6 +1,5 @@
 module.exports.reviewValidation = (req, res, next) => {
     const review_re = /^[a-zA-Z0-9.\s!#$%&'*+/=?^_`{|}~-]+$/;
-    const star_re = /^[0-5]{1}$/;
     
     let errors = [];
 
@@ -16,7 +15,8 @@ module.exports.reviewValidation = (req, res, next) => {
         errors.push('Warning: You are using an invalid software')
     }
 
-    if(req.body.star && !req.body.star.match(star_re)) {
+    if((req.body.star && req.body.star < 1) ||
+       (req.body.star && req.body.star > 5)) {
         errors.push('Invalid star number')
     }
 

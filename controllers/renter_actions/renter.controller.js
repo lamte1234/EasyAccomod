@@ -60,7 +60,7 @@ module.exports.postReviewByPostID = (req, res) => {
     const dataReview = {
         renter_id:  req.signedCookies.userId,
         post_id: req.params.id,
-        star: req.body.star,
+        star: parseInt(req.body.star),
         review: req.body.review
     }
 
