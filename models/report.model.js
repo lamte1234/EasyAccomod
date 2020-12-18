@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const reportSchema = mongoose.Schema({
-    renter_id: mongoose.SchemaTypes.ObjectId,
-    post_id: mongoose.SchemaTypes.ObjectId,
+    renter_id: {type: mongoose.SchemaTypes.ObjectId, ref: 'Renter'},
+    post_id: {type: mongoose.SchemaTypes.ObjectId, ref: 'Post'},
     comment: String
 });
 

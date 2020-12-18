@@ -1,5 +1,6 @@
 const Owner = require('../../models/owner.model');
 const Post = require('../../models/post.model');
+const Report = require('../../models/report.model');
 
 // users/admin/accounts
 module.exports.getUnapprovedOwners = (req, res) => {
@@ -41,7 +42,7 @@ module.exports.getUnapprovedPosts = (req, res) => {
     .catch(err => res.status(500).send('server error'));
 }
 
-// / users/admin/posts/:id
+// / users/admin/posts/:id can get approved post too
 module.exports.getUnapprovedPostByID = (req, res) => {
     const id = req.params.id;
 
@@ -56,5 +57,12 @@ module.exports.patchApprovedPost = (req, res) => {
     Post.findByIdAndUpdate(id, {is_approved: true})
     .then(post => res.status(200).json('success'))
     .catch(err => res.status(500).send('server error'));
+}
+
+// /users/admin/report
+module.exports.getAllReports = (req, res) => {
+    Report.find().populate('renter_id', 'name').populate('post_id', 'title')
+    .then(reports => res.status(200).json(reports))
+    .catch(err =>  res.status(500).send('server error'))
 }
 

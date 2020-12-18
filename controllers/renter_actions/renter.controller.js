@@ -1,7 +1,7 @@
 const Post = require('../../models/post.model');
 const Wishlist = require('../../models/wishlist.model');
 const Review = require('../../models/review.model');
-const { model } = require('../../models/post.model');
+const Report = require('../../models/report.model');
 
 // /users/renter/search
 module.exports.getSearch = (req, res) => {
@@ -75,5 +75,23 @@ module.exports.getAllReviewsByPostID = (req, res) => {
 
     Review.find({post_id: post_id}).populate('renter_id', 'name')
     .then(reviews => res.status(200).json(reviews))
+    .catch(err => res.status(500).send('server error'));
+}
+
+// /users/renter/report/:id
+module.exports.postReportByPostID = (req, res) => {
+    const renter_id = req.signedCookies.userId;
+    const post_id = req.params.id;
+    const comment = req.body.comment;
+    
+    const dataReport = {
+        renter_id: renter_id,
+        post_id: post_id,
+        comment: comment
+    }
+
+    const newReport = new Report(dataReport);
+    newReport.save()
+    .then(report => res.status(201).send('success'))
     .catch(err => res.status(500).send('server error'));
 }

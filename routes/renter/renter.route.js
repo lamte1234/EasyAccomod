@@ -6,6 +6,7 @@ const userControllers = require('../../controllers/users.controller');
 
 const changePassMiddleware = require('../../middlewares/account.middleware');
 const reviewMiddleware = require('../../middlewares/review.middleware');
+const reportMiddleware = require('../../middlewares/report.middleware')
 
 // /users/renter/explore
 router.get('/explore', controllers.getExplore);
@@ -22,6 +23,7 @@ router.patch('/change-password', changePassMiddleware.usersChangePassword, userC
 // /users/renter/review/:id
 router.get('/review/:id', controllers.getAllReviewsByPostID);
 router.post('/review/:id', reviewMiddleware.reviewValidation, controllers.postReviewByPostID);
-
+// /users/renter/report/:id
+router.post('/report/:id', reportMiddleware.reportValidation, controllers.postReportByPostID);
 
 module.exports = router;

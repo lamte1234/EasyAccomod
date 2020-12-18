@@ -21,5 +21,7 @@ router.get('/edit-auth', controllers.getUneditableOwners);
 router.patch('/edit-auth/:id', controllers.patchEditAuthOwner);
 // /users/admin/change-password
 router.patch('/change-password', changePassMiddleware.usersChangePassword, userControllers.patchChangePassword);
+// /users/admin/report
+router.get('/report', controllers.getAllReports);
 
 module.exports = router;
