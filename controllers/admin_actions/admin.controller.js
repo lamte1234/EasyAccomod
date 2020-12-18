@@ -1,6 +1,7 @@
 const Owner = require('../../models/owner.model');
 const Post = require('../../models/post.model');
 const Report = require('../../models/report.model');
+const moment = require('moment');
 
 // users/admin/accounts
 module.exports.getUnapprovedOwners = (req, res) => {
@@ -48,14 +49,15 @@ module.exports.getUnapprovedPostByID = (req, res) => {
 
     Post.findById(id).populate('owner_id')
     .then(post => res.status(200).json(post))
-    .catch(err => res.status(500).send('server error'));
+    .catch(err => console.log(err));
 }
 
 module.exports.patchApprovedPost = (req, res) => {
     const id = req.params.id;
 
-    Post.findByIdAndUpdate(id, {is_approved: true})
-    .then(post => res.status(200).json('success'))
+    Post.findByIdAndUpdate(id, {is_approved: true,
+                                approve_date: moment().toISOString})
+    .then(post => res.status(200).json(post))
     .catch(err => res.status(500).send('server error'));
 }
 

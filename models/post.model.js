@@ -28,6 +28,8 @@ const postSchema = mongoose.Schema({
     time: String, // week 1-4
     likes: Number, // not in form
     views: Number, // not in form
+
+    approve_date: Date
 });
 
 const Post = mongoose.model('Post', postSchema, 'posts');

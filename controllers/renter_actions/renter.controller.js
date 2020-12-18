@@ -2,6 +2,7 @@ const Post = require('../../models/post.model');
 const Wishlist = require('../../models/wishlist.model');
 const Review = require('../../models/review.model');
 const Report = require('../../models/report.model');
+const moment = require('moment');
 
 // /users/renter/search
 module.exports.getSearch = (req, res) => {
@@ -11,7 +12,16 @@ module.exports.getSearch = (req, res) => {
         status: true
     }
     Post.find(data)
-    .then(posts => res.status(200).json(posts))
+    .then(posts => {
+        let data = [];
+        posts.forEach(post => {
+            const week = parseInt(post.time);
+            const last_approve_time = post.approve_date;
+            const diff = moment.duration(moment() - last_approve_time).asWeeks();
+            if(diff <= week) {data.push(post)}
+        })
+        res.status(200).json(data);
+    })
     .catch(error => res.status(500).send('server error'));
 }
 
