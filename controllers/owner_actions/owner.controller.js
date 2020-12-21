@@ -127,5 +127,5 @@ module.exports.patchOvertimePostByID = (req, res) => {
     Post.findByIdAndUpdate(post_id, {is_approved: false,
                                      approve_date: moment().toISOString()})
     .then(post => res.status(200).send('success'))
-    .catch(err => console.log(err));
+    .catch(err => res.status(500).send('server error'));
 }

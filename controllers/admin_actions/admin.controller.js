@@ -56,7 +56,7 @@ module.exports.patchApprovedPost = (req, res) => {
     const id = req.params.id;
 
     Post.findByIdAndUpdate(id, {is_approved: true,
-                                approve_date: moment().toISOString})
+                                approve_date: moment().toISOString()})
     .then(post => res.status(200).json(post))
     .catch(err => res.status(500).send('server error'));
 }
