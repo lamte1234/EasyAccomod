@@ -48,24 +48,23 @@ module.exports.ownerEditPost = (req, res, next) => {
     }
     //description
     //bathroom
-    if (!req.body.bathroom) { errors.push('Bathroom is required.') }
-    if ((req.body.bathroom && req.body.bathroom !== "true" && req.body.bathroom !== "false")) {
+    if (req.body.bathroom === undefined) { errors.push('Bathroom is required.') }
+    if ((req.body.bathroom !== undefined && req.body.bathroom !== true && req.body.bathroom !== false)) {
         errors.push('Bathroom must be boolean.')
     }
     //kitchen
-    if (!req.body.kitchen) { errors.push('Bathroom is required.') }
-    if ((req.body.kitchen && req.body.kitchen !== "true" && req.body.kitchen !== "false")) {
+    if (req.body.kitchen === undefined) { errors.push('Bathroom is required.') }
+    if ((req.body.kitchen !== undefined && req.body.kitchen !== true && req.body.kitchen !== false)) {
         errors.push('Kitchen must be boolean.');
-        console.log(req.body.kitchen !== "true");
     }
     //aircon
-    if (!req.body.air_con) { errors.push('Air conditioner is required.') }
-    if ((req.body.air_con && req.body.air_con !== "true" && req.body.air_con !== "false")) {
+    if (req.body.air_con === undefined) { errors.push('Air conditioner is required.') }
+    if ((req.body.air_con !== undefined && req.body.air_con !== true && req.body.air_con !== false)) {
         errors.push('Air conditioner must be boolean.')
     }
     //waterheater
-    if (!req.body.water_heater) { errors.push('Water heater is required.') }
-    if ((req.body.water_heater && req.body.water_heater !== "true" && req.body.water_heater !== "false")) {
+    if (req.body.water_heater === undefined) { errors.push('Water heater is required.') }
+    if ((req.body.water_heater !== undefined && req.body.water_heater !== true && req.body.water_heater !== false)) {
         errors.push('Water heater must be boolean.')
     }
     //service rate
@@ -80,8 +79,8 @@ module.exports.ownerEditPost = (req, res, next) => {
         errors.push('Water rate must be number.')
     }
     //status
-    if (!req.body.status) { errors.push('Status heater is required.') }
-    if ((req.body.status && req.body.status !== "true" && req.body.status !== "false")) {
+    if (req.body.status === undefined) { errors.push('Status heater is required.') }
+    if ((req.body.status !== undefined && req.body.status !== true && req.body.status !== false)) {
         errors.push('Water heater must be boolean.')
     }
     
