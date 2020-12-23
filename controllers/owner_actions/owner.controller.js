@@ -1,5 +1,6 @@
 const Post = require('../../models/post.model');
 const Owner = require('../../models/owner.model');
+const OwnerNofi = require('../../models/owner_nofi.model');
 const moment = require('moment');
 
 // /users/owner/post
@@ -128,4 +129,24 @@ module.exports.patchOvertimePostByID = (req, res) => {
                                      approve_date: moment().toISOString()})
     .then(post => res.status(200).send('success'))
     .catch(err => res.status(500).send('server error'));
+}
+
+// /users/owner/notifications
+
+module.exports.getOwnerNotifications = (req, res) => {
+    const owner_id = req.signedCookies.userId;
+
+    OwnerNofi.find({owner_id: owner_id, read: false}).populate('post_id', 'title')
+    .then(nofi => res.status(200).json(nofi))
+    .catch(err => res.status(500).send('server error'))
+}
+
+// /users/owner/notifications/:id
+
+module.exports.patchOwnerNotifications = (req, res) => {
+    const id = req.params.id
+
+    OwnerNofi.findByIdAndUpdate(id, {read: true})
+    .then(ownernofi => res.status(200).send('success'))
+    .catch(err => res.status(500).send('server error'))
 }

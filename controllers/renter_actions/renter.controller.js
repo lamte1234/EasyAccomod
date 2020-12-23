@@ -44,17 +44,18 @@ module.exports.wishlist = (req, res) => {
 }
 
 // users/renter/wishlist/:id
-module.exports.addWishlist = (req, res) => {
+module.exports.addWishlist = async (req, res) => {
     const id = req.params.id;
     const renter_id = req.signedCookies.userId;
 
-    Post.findByIdAndUpdate(id, {$inc: {likes: 1}})
-    .then(post => console.log('increase post likes'))
-    .catch(err => res.send('server error'));
-
-    Wishlist.findOneAndUpdate({renter_id: renter_id}, {$push: {post_list: id}})
-    .then(wishlist => res.status(200).send('success'))
-    .catch(err => res.status(500).send('server error'));
+    try{
+        const post = await Post.findByIdAndUpdate(id, {$inc: {likes: 1}});
+        const wishlist = await Wishlist.findOneAndUpdate({renter_id: renter_id}, {$push: {post_list: id}});
+        res.status(200).send('success');
+    }
+    catch(err) {
+        res.status(500).send('server error')
+    }
 
 }
 

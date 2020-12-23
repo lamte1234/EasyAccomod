@@ -34,5 +34,9 @@ router.patch('/change-status/:id', controllers.patchPostStatus);
 router.get('/extend', controllers.getOvertimePost);
 // /users/owner/extend/:id
 router.patch('/extend/:id', extendMiddleware.timeExtendValidation, controllers.patchOvertimePostByID);
+// /users/owner/notificatons
+router.get('/notifications', controllers.getOwnerNotifications);
+// /users/owoner/notifications/:id
+router.patch('/notifications/:id', controllers.patchOwnerNotifications);
 
 module.exports = router;

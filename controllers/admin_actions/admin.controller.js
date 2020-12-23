@@ -1,6 +1,7 @@
 const Owner = require('../../models/owner.model');
 const Post = require('../../models/post.model');
 const Report = require('../../models/report.model');
+const OwnerNofi = require('../../models/owner_nofi.model');
 const moment = require('moment');
 
 // users/admin/accounts
@@ -52,13 +53,26 @@ module.exports.getUnapprovedPostByID = (req, res) => {
     .catch(err => console.log(err));
 }
 
-module.exports.patchApprovedPost = (req, res) => {
+module.exports.patchApprovedPost = async (req, res) => {
     const id = req.params.id;
 
-    Post.findByIdAndUpdate(id, {is_approved: true,
+    try{
+        const post = await Post.findByIdAndUpdate(id, {is_approved: true,
                                 approve_date: moment().toISOString()})
-    .then(post => res.status(200).json(post))
-    .catch(err => res.status(500).send('server error'));
+        const newNotification = {
+            post_id: id,
+            owner_id: post.owner_id,
+            read: false,
+            issue_time: moment().toISOString()
+        }
+
+        const ownerNofi = await new OwnerNofi(newNotification).save();
+        res.status(200).send('success');
+    }
+    catch(err) {
+        res.status(500).send('server error');
+    }
+    
 }
 
 // /users/admin/report
