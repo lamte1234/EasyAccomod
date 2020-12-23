@@ -3,6 +3,7 @@ const Post = require('../../models/post.model');
 const Report = require('../../models/report.model');
 const OwnerNofi = require('../../models/owner_nofi.model');
 const moment = require('moment');
+const AdminNofi = require('../../models/admin_nofi.model');
 
 // users/admin/accounts
 module.exports.getUnapprovedOwners = (req, res) => {
@@ -82,3 +83,17 @@ module.exports.getAllReports = (req, res) => {
     .catch(err =>  res.status(500).send('server error'))
 }
 
+// /users/admin/notifications
+module.exports.getAdminNotifications = (req, res) => {
+    AdminNofi.find({read: false}).populate('owner_id', 'name').populate('post_id', 'title')
+    .then(notificaions => res.status(200).json(notificaions))
+    .catch(err => res.status(500).send('server error'))
+}
+// /users/admin/notifications/:id
+module.exports.patchAdminNotifications = (req, res) => {
+    const id = req.params.id;
+
+    AdminNofi.findByIdAndUpdate(id, {read: true})
+    .then(nofi => res.status(200).send('success'))
+    .catch(err => res.status(500).send('server error'))
+}

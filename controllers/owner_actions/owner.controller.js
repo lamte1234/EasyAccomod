@@ -1,6 +1,7 @@
 const Post = require('../../models/post.model');
 const Owner = require('../../models/owner.model');
 const OwnerNofi = require('../../models/owner_nofi.model');
+const AdminNofi = require('../../models/admin_nofi.model');
 const moment = require('moment');
 
 // /users/owner/post
@@ -88,18 +89,28 @@ module.exports.getAllPost = (req, res) => {
 }
 
 // /users/owner/change-status/:id
-module.exports.patchPostStatus = (req, res) => {
+module.exports.patchPostStatus = async (req, res) => {
     const post_id = req.params.id;
-
-    Post.findById(post_id)
-    .then(post => {
+    const owner_id = req.signedCookies.userId;
+    try {
+        let post = await Post.findById(post_id);
         post.status = !post.status;
-        post.save(err => {
-            if(err) {res.status(500).send('server error')}
-        })
+        await post.save();
+        
+        const newNotification = {
+            owner_id: owner_id,
+            post_id: post_id,
+            read: false,
+            issue_time: moment()
+        }
+
+        const adminNofi = await new AdminNofi(newNotification).save();
+
         res.status(200).send('success');
-    })
-    .catch(err => res.status(500).send('server error'));
+    }
+    catch (err) {
+        res.status(500).send('server error')
+    }
 }
 
 // /users/owner/extend

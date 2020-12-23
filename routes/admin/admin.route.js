@@ -23,5 +23,9 @@ router.patch('/edit-auth/:id', controllers.patchEditAuthOwner);
 router.patch('/change-password', changePassMiddleware.usersChangePassword, userControllers.patchChangePassword);
 // /users/admin/report
 router.get('/report', controllers.getAllReports);
+// /users/admin/notifications
+router.get('/notifications', controllers.getAdminNotifications);
+// /users/admin/notifications/:id
+router.patch('/notifications/:id', controllers.patchAdminNotifications)
 
 module.exports = router;
