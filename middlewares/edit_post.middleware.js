@@ -33,7 +33,9 @@ module.exports.ownerEditPost = (req, res, next) => {
     }
     // roomtype
     if (!req.body.room_type) { errors.push('Room type is required.') }
-    if (req.body.room_type && !req.body.room_type.match(postString_re)) {
+    if (req.body.room_type && req.body.room_type !== 'Apartment' &&
+        req.body.room_type !== 'Guest House' && req.body.room_type !== 'Shared Room' &&
+        req.body.room_type !== 'Premium Apartment' && req.body.room_type !== 'House') {
         errors.push('Room type must be text.')
     }
     // rented_rate
