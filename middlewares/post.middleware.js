@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 module.exports.postValidation = (req, res, next) => {
-    const errors = [];
+    let errors = [];
 
     const postString_re = /^[a-zA-Z0-9\s]+$/;
     const area_re = /^[1-9][0-9]*[,.]{0,1}[0-9]*$/;
@@ -88,7 +88,8 @@ module.exports.postValidation = (req, res, next) => {
         errors.push('Posting time must in range 1-4 weeks.');
     }
     // image
-    if ((req.files && req.files.length < 3) ||
+    if ((req.files && req.files.length < 3 ) ||
+        (req.files && req.files.length > 5) ||
         (!req.files)) {
         errors.push('Must have at least 3 images, max 5 images');
         req.files.map(file => {

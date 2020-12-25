@@ -1,6 +1,6 @@
 module.exports.ownerEditPost = (req, res, next) => {
     
-    const errors = [];
+    let errors = [];
 
     const postString_re = /^[a-zA-Z0-9\s]+$/;
     const area_re = /^[1-9][0-9]*[,.]{0,1}[0-9]*$/;

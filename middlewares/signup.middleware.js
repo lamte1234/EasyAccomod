@@ -73,7 +73,7 @@ module.exports.postOwner = async (req, res, next) => {
     }
 
     if(req.body.email && !req.body.email.match(email_re)){
-        errors.push(req.body.email.match(email_re));
+        errors.push('Invalid email');
     }
     
     if (!req.body.name) {
