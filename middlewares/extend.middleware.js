@@ -4,8 +4,15 @@ const moment = require('moment');
 module.exports.timeExtendValidation = async (req, res ,next) => {
     const post_id = req.params.id;
     let errors = [];
+    let post;
 
-    const post = Post.findOne(post_id);
+    try {
+        post = await Post.findOne(post_id);
+    }
+    catch(err) {
+        res.status(500).send('server error');
+        return;
+    }
     const approve_date = post.approve_date;
     const week = parseInt(post.time);
     const diff = moment.duration(moment() - approve_date).asWeeks();
@@ -24,7 +31,7 @@ module.exports.timeExtendValidation = async (req, res ,next) => {
         const data = {
             errors: errors
         }
-        res.json(data);
+        res.status(200).json(data);
         return;
     }
     

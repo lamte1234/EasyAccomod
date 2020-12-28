@@ -1,6 +1,7 @@
 const Admin = require('../models/admin.model');
 const Renter = require('../models/renter.model');
 const Owner = require('../models/owner.model');
+const { owner } = require('../controllers/users.controller');
 
 // -----------------ADMIN--------------------------------
 module.exports.adminAuth =  (req, res, next) => {
@@ -27,7 +28,7 @@ module.exports.adminAuth =  (req, res, next) => {
                 return;
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => res.status(500).send('server error'))
     }
     next();
 }
@@ -57,7 +58,7 @@ module.exports.renterAuth = (req, res, next) => {
                 return;
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => res.status(500).send('server error'))
     }
     next();
 }
@@ -80,29 +81,35 @@ module.exports.ownerAuth = async (req, res, next) => {
         return;
     }
 
-    
-    const owner = await Owner.findById(req.signedCookies.userId);
+    try {
+        const owner = await Owner.findById(req.signedCookies.userId);
 
-    if(!owner){
-        res.status(401).send('Access denied');
-        return;
+        if(!owner){
+            res.status(401).send('Access denied');
+            return;
+        }
+
+        if(owner._doc.is_approved === false){
+            res.status(401).send('Access denied');
+            return;
+        }
     }
-
-    if(owner._doc.is_approved === false){
-        res.status(401).send('Access denied');
-        return;
+    catch(err) {
+        res.status(500).send('server error');
     }
 
     next();
 }
 
-module.exports.ownerEditAccountAuth = async (req, res, next) => {
-    const owner = await Owner.findById(req.signedCookies.userId);
-
-    if(owner._doc.editable === false){
-        res.status(401).send('Access denied');
-        return;
-    }
+module.exports.ownerEditAccountAuth = (req, res, next) => {
+    Owner.findById(req.signedCookies.userId)
+    .then(owner => {
+        if(owner.editable === false) {
+            res.status(401).send('Access denied');
+            return;
+        }
+    })
+    .catch(err => res.status(500).send('server error'));
 
     next();
 }

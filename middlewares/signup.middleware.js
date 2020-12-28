@@ -38,17 +38,23 @@ module.exports.postRenter = async (req, res, next) => {
         errors.push('Password must match.');
     }
 
-    const renter = await Renter.findOne({ email: req.body.email });
-
-    if (renter) {
-        errors.push('Existing email.');
+    try {
+        const renter = await Renter.findOne({ email: req.body.email });
+        if (renter) {
+            errors.push('Existing email.');
+        }
     }
+    catch(err) {
+        res.status(500).send('server error');
+        return;
+    }
+    
 
     if (errors.length) {
         const data = {
             errors: errors
         }
-        res.json(data);
+        res.status(200).json(data);
         return;
     }
 
@@ -121,17 +127,23 @@ module.exports.postOwner = async (req, res, next) => {
         errors.push('Password must match');
     }
 
-    const owner = await Owner.findOne({email: req.body.email});
-
-    if (owner) {
-        errors.push('Existing email');
+    try {
+        const owner = await Owner.findOne({email: req.body.email});
+        if (owner) {
+            errors.push('Existing email');
+        }
     }
+    catch(err) {
+        res.status(500).send('server error');
+        return;
+    }
+    
 
     if (errors.length) {
         const data = {
             errors: errors
         };
-        res.json(data);
+        res.status(200).json(data);
         return;
     }
 

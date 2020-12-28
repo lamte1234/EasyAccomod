@@ -13,9 +13,14 @@ module.exports.postRenter = async (req, res) => {
         password: md5(extraPass)
     };
     
-    const newRenter = await new Renter(dataRenter).save();
-    const newWishlist = await new Wishlist({renter_id: newRenter._id, post_list: []}).save();
-    res.status(201).json(newRenter);
+    try {
+        const newRenter = await new Renter(dataRenter).save();
+        const newWishlist = await new Wishlist({renter_id: newRenter._id, post_list: []}).save();
+        res.status(201).json(newRenter);
+    }
+    catch (err) {
+        res.status(500).send('server error');
+    }
 };
 
 module.exports.postOwner = (req, res) => {

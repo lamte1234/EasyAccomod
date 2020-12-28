@@ -7,6 +7,7 @@ const md5 = require('md5');
 module.exports.postLogin = async (req, res, next) => {
     let model = Owner;
     let errors = [];
+    let user;
 
     if(req.body.account_type !== 'renter_account' && 
         req.body.account_type !== 'owner_account' &&
@@ -23,8 +24,14 @@ module.exports.postLogin = async (req, res, next) => {
         model = Admin;
     };
 
-    const user = await model.findOne({email: req.body.email});
-
+    try {
+        user = await model.findOne({email: req.body.email});
+    }
+    catch(err) {
+        res.status(500).send('server error');
+        return;
+    }
+    
     const email_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/
 
@@ -55,7 +62,7 @@ module.exports.postLogin = async (req, res, next) => {
         const data = {
             errors: errors
         }
-        res.json(data);
+        res.status(200).json(data);
 
         return;
     }

@@ -8,7 +8,7 @@ module.exports.ownerChangeAccount = (req, res, next) => {
     
     const phone_re = /^[0-9]{10}$/;
     const id_num_re = /^[a-zA-Z0-9]{16}$/;
-    const name_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
+    const name_re = /^[a-zA-Z0-9\s.!#$%&'*+/=?^_`{|}~-]+$/;
     const address_re = /^[a-zA-Z0-9\s]+$/;
 
     if (!req.body.name) {
@@ -47,7 +47,7 @@ module.exports.ownerChangeAccount = (req, res, next) => {
         const data = {
             errors: errors
         };
-        res.json(data);
+        res.status(200).json(data);
         return;
     }
 
@@ -73,8 +73,13 @@ module.exports.usersChangePassword = async (req, res, next) => {
 
     let errors = [];
 
-    const user = await model.findById(id);
-
+    try{
+        const user = await model.findById(id);
+    }
+    catch(err) {
+        res.status(500).send('server error');
+        return;
+    }
 
     if(!req.body.current_password || !req.body.new_password || !req.body.cf_pass) {
         errors.push('Password is required')
@@ -98,7 +103,7 @@ module.exports.usersChangePassword = async (req, res, next) => {
         const data = {
             errors: errors
         };
-        res.json(data);
+        res.status(200).json(data);
         return;
     }
 

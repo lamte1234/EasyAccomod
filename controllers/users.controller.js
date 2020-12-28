@@ -40,19 +40,30 @@ module.exports.patchChangePassword = async (req, res) => {
     const newPassword = md5(req.body.new_password + process.env.PASSWORD_EXTRA_SECRET);
 
     if(user_type === "renter"){
-        user = await Renter.findByIdAndUpdate(id, {password: newPassword});
+        try{
+            user = await Renter.findByIdAndUpdate(id, {password: newPassword});
+            res.status(200).send('success');
+        }
+        catch(err) {
+            res.status(500).send('server error');
+        }
     }
     else if(user_type === "owner"){
-        user = await Owner.findByIdAndUpdate(id, {password: newPassword});
+        try {
+            user = await Owner.findByIdAndUpdate(id, {password: newPassword});
+            res.status(200).send('success');
+        }
+        catch(err) {
+            res.status(500).send('server error');
+        }
     }
     else if(user_type === "admin"){
-        user = await Admin.findByIdAndUpdate(id, {password: newPassword});
-    }
-
-    if(user) {
-        res.status(200).send("success");
-    }
-    else{
-        res.status(500).send("server error");
+        try {
+            user = await Admin.findByIdAndUpdate(id, {password: newPassword});
+            res.status(200).send('success');
+        }
+        catch(err) {
+            res.status(500).send('server error');
+        }
     }
 }

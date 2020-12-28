@@ -32,8 +32,8 @@ module.exports.postLogin = async (req, res) => {
         data.wishlist = wishlist.post_list;
     }
     
-    res.cookie('userType', user_type, {signed: true});
-    res.cookie('userId', user._doc._id, {signed: true});
+    res.cookie('userType', user_type, {signed: true, maxAge: 7200000});
+    res.cookie('userId', user._doc._id, {signed: true, maxAge: 7200000});
     res.status(200).json(data); // manage data sent later
 };
 

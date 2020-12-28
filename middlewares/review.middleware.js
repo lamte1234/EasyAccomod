@@ -24,7 +24,7 @@ module.exports.reviewValidation = (req, res, next) => {
         const data = {
             errors: errors
         }
-        res.json(data);
+        res.status(200).json(data);
         return;
     }
     
