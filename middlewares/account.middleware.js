@@ -60,6 +60,7 @@ module.exports.usersChangePassword = async (req, res, next) => {
     const current_password = md5(req.body.current_password + process.env.PASSWORD_EXTRA_SECRET);
     const password_re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,13}$/;
     let model;
+    let user;
 
     if(user_type === "renter") {
         model = Renter;
@@ -74,7 +75,7 @@ module.exports.usersChangePassword = async (req, res, next) => {
     let errors = [];
 
     try{
-        const user = await model.findById(id);
+        user = await model.findById(id);
     }
     catch(err) {
         res.status(500).send('server error');

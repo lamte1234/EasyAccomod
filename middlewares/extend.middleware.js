@@ -7,7 +7,7 @@ module.exports.timeExtendValidation = async (req, res ,next) => {
     let post;
 
     try {
-        post = await Post.findOne(post_id);
+        post = await Post.findById(post_id);
     }
     catch(err) {
         res.status(500).send('server error');

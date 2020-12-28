@@ -11,7 +11,7 @@ module.exports.reviewValidation = (req, res, next) => {
         errors.push('Invalid review')
     }
 
-    if(!req.body.star) {
+    if(req.body.star === undefined) {
         errors.push('Warning: You are using an invalid software')
     }
 
